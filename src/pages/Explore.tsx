@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Heart, Users, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import NgoInfoPanel from '@/components/NgoInfoPanel';
+import Map from '@/components/Map';
 
 // Mock NGO data
 const mockNgos = [
@@ -96,30 +97,12 @@ const Explore = () => {
         </div>
       </motion.div>
 
-      {/* Map Placeholder - Testing */}
-      <div className="relative z-0 w-full h-full bg-gray-800 flex items-center justify-center">
-        <div className="text-center text-white">
-          <h2 className="text-2xl font-bold mb-4">Interactive Map</h2>
-          <p className="text-gray-300">Map will be restored once compatibility issues are resolved</p>
-          
-          {/* Mock Markers as Cards */}
-          <div className="grid grid-cols-2 gap-4 mt-8 max-w-md">
-            {mockNgos.slice(0, 4).map((ngo) => (
-              <div 
-                key={ngo.id}
-                className="bg-light-dark-blue/90 rounded-lg p-3 cursor-pointer hover:bg-accent-red/20 transition-colors"
-                onClick={() => handleMarkerClick(ngo)}
-              >
-                <h3 className="font-bold text-sm text-off-white">{ngo.name}</h3>
-                <p className="text-xs text-text-gray mt-1">{ngo.category}</p>
-                <div className="flex items-center mt-2 text-xs text-accent-red">
-                  <Users className="w-3 h-3 mr-1" />
-                  {ngo.volunteersNeeded} needed
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Interactive Map Background */}
+      <div className="relative z-0 w-full h-full">
+        <Map 
+          ngos={mockNgos}
+          onMarkerClick={handleMarkerClick}
+        />
       </div>
 
 
