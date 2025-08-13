@@ -7,7 +7,6 @@ import Index from "./pages/Index";
 import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-import 'leaflet/dist/leaflet.css';
 
 const queryClient = new QueryClient();
 

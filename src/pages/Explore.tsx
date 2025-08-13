@@ -1,51 +1,8 @@
 import React, { useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Heart, Users, Clock } from 'lucide-react';
-import L from 'leaflet';
 import { Button } from '@/components/ui/button';
 import NgoInfoPanel from '@/components/NgoInfoPanel';
-
-// Fix leaflet default markers
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
-
-// Custom NGO marker icon
-const createNgoIcon = () => {
-  return L.divIcon({
-    html: `
-      <div style="
-        width: 24px; 
-        height: 24px; 
-        background-color: #ef4444; 
-        border-radius: 50%; 
-        border: 2px solid white; 
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        display: flex; 
-        align-items: center; 
-        justify-content: center;
-        animation: pulse 2s infinite;
-      ">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
-      </div>
-      <style>
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.1); }
-        }
-      </style>
-    `,
-    className: '',
-    iconSize: [24, 24],
-    iconAnchor: [12, 12]
-  });
-};
 
 // Mock NGO data
 const mockNgos = [
@@ -118,36 +75,31 @@ const Explore = () => {
         </div>
       </motion.div>
 
-      {/* Map - Simplified Version */}
-      <MapContainer
-        center={[40.7128, -74.0060]}
-        zoom={12}
-        style={{ height: '100%', width: '100%' }}
-        className="relative z-0"
-      >
-        <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          attribution='&copy; OpenStreetMap contributors &copy; CARTO'
-        />
-        
-        <Marker position={[40.7128, -74.0060]}>
-          <Popup>
-            <div className="text-center p-2">
-              <h3 className="font-bold">Community Food Bank</h3>
-              <p className="text-sm text-gray-600 mt-1">Fighting hunger in our community</p>
-            </div>
-          </Popup>
-        </Marker>
-        
-        <Marker position={[40.7580, -73.9855]}>
-          <Popup>
-            <div className="text-center p-2">
-              <h3 className="font-bold">Urban Tree Initiative</h3>
-              <p className="text-sm text-gray-600 mt-1">Planting urban green spaces</p>
-            </div>
-          </Popup>
-        </Marker>
-      </MapContainer>
+      {/* Map Placeholder - Testing */}
+      <div className="relative z-0 w-full h-full bg-gray-800 flex items-center justify-center">
+        <div className="text-center text-white">
+          <h2 className="text-2xl font-bold mb-4">Interactive Map</h2>
+          <p className="text-gray-300">Map will be restored once compatibility issues are resolved</p>
+          
+          {/* Mock Markers as Cards */}
+          <div className="grid grid-cols-2 gap-4 mt-8 max-w-md">
+            {mockNgos.slice(0, 4).map((ngo) => (
+              <div 
+                key={ngo.id}
+                className="bg-light-dark-blue/90 rounded-lg p-3 cursor-pointer hover:bg-accent-red/20 transition-colors"
+                onClick={() => handleMarkerClick(ngo)}
+              >
+                <h3 className="font-bold text-sm text-off-white">{ngo.name}</h3>
+                <p className="text-xs text-text-gray mt-1">{ngo.category}</p>
+                <div className="flex items-center mt-2 text-xs text-accent-red">
+                  <Users className="w-3 h-3 mr-1" />
+                  {ngo.volunteersNeeded} needed
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Category Filter Pills */}
       <motion.div 
