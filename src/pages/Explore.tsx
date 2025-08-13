@@ -53,24 +53,26 @@ const Explore = () => {
 
   return (
     <div className="relative w-full h-screen bg-dark-blue overflow-hidden">
-      {/* Header */}
+      {/* Header - Aligned at top */}
       <motion.div 
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="absolute top-0 left-0 right-0 z-[1000] bg-gradient-to-b from-dark-blue to-transparent p-4"
+        className="absolute top-0 left-0 right-0 z-[1000] bg-dark-blue/95 backdrop-blur-sm border-b border-light-dark-blue"
       >
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" className="text-off-white hover:bg-light-dark-blue">
-              <MapPin className="w-5 h-5 mr-2" />
-              Explore NGOs
-            </Button>
-          </div>
-          <div className="flex items-center space-x-2 bg-light-dark-blue/80 backdrop-blur-sm rounded-full px-4 py-2">
-            <Heart className="w-4 h-4 text-accent-red" />
-            <span className="text-off-white text-sm font-medium">
-              {mockNgos.reduce((sum, ngo) => sum + ngo.volunteersNeeded, 0)} volunteers needed
-            </span>
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Button variant="ghost" className="text-off-white hover:bg-light-dark-blue">
+                <MapPin className="w-5 h-5 mr-2" />
+                Explore NGOs
+              </Button>
+            </div>
+            <div className="flex items-center space-x-2 bg-light-dark-blue/80 backdrop-blur-sm rounded-full px-4 py-2">
+              <Heart className="w-4 h-4 text-accent-red" />
+              <span className="text-off-white text-sm font-medium">
+                {mockNgos.reduce((sum, ngo) => sum + ngo.volunteersNeeded, 0)} volunteers needed
+              </span>
+            </div>
           </div>
         </div>
       </motion.div>
