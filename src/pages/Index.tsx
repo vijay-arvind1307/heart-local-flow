@@ -39,38 +39,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      {/* Navigation */}
-      <motion.nav 
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-dark-blue/90 backdrop-blur-sm border-b border-light-dark-blue"
-      >
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <motion.div 
-              className="flex items-center space-x-2"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="w-8 h-8 bg-accent-red rounded-lg flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-off-white">Inaippu</span>
-            </motion.div>
-            
-            <div className="hidden md:flex items-center space-x-8">
-              <Link to="/explore" className="text-text-gray hover:text-off-white transition-colors">
-                Explore
-              </Link>
-              <Link to="/profile" className="text-text-gray hover:text-off-white transition-colors">
-                Profile
-              </Link>
-              <Button variant="hero" size="sm">
-                Get Started
-              </Button>
-            </div>
-          </div>
-        </div>
-      </motion.nav>
+      {/* Hero Section */}
 
       {/* Hero Section */}
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -170,9 +139,9 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-off-white mb-6">
-              How Inaippu Works
-            </h2>
+                         <h2 className="text-4xl md:text-5xl font-bold text-off-white mb-6">
+               How Ripple Works
+             </h2>
             <p className="text-xl text-text-gray max-w-3xl mx-auto">
               Our platform makes it easy to find volunteering opportunities, 
               track your impact, and connect with your community.
@@ -234,16 +203,16 @@ const Index = () => {
       {/* Footer */}
       <footer className="bg-dark-blue/80 border-t border-light-dark-blue py-12">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <div className="w-8 h-8 bg-accent-red rounded-lg flex items-center justify-center">
-              <Heart className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-off-white">Inaippu</span>
-          </div>
+                     <div className="flex items-center justify-center space-x-2 mb-6">
+             <div className="w-8 h-8 bg-accent-red rounded-lg flex items-center justify-center">
+               <Heart className="w-5 h-5 text-white" />
+             </div>
+             <span className="text-xl font-bold text-off-white">Ripple</span>
+           </div>
           
-          <div className="text-center text-text-gray">
-            <p>&copy; 2024 Inaippu. Making the world better, one volunteer at a time.</p>
-          </div>
+                     <div className="text-center text-text-gray">
+             <p>&copy; 2024 Ripple. Making the world better, one volunteer at a time.</p>
+           </div>
         </div>
       </footer>
     </div>
