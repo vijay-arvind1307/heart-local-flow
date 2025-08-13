@@ -118,7 +118,7 @@ const Explore = () => {
         </div>
       </motion.div>
 
-      {/* Map */}
+      {/* Map - Simplified Version */}
       <MapContainer
         center={[40.7128, -74.0060]}
         zoom={12}
@@ -127,35 +127,26 @@ const Explore = () => {
       >
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          attribution='&copy; OpenStreetMap contributors &copy; CARTO'
         />
         
-        {mockNgos.map((ngo) => {
-          return (
-            <Marker
-              key={ngo.id}
-              position={ngo.position}
-              icon={createNgoIcon()}
-              eventHandlers={{
-                click: () => handleMarkerClick(ngo)
-              }}
-            >
-              <Popup>
-                <div className="text-center p-2">
-                  <h3 className="font-bold text-dark-blue">{ngo.name}</h3>
-                  <p className="text-sm text-gray-600 mt-1">{ngo.description}</p>
-                  <Button 
-                    size="sm" 
-                    className="mt-2 bg-accent-red hover:bg-accent-red-hover"
-                    onClick={() => handleMarkerClick(ngo)}
-                  >
-                    View Details
-                  </Button>
-                </div>
-              </Popup>
-            </Marker>
-          );
-        })}
+        <Marker position={[40.7128, -74.0060]}>
+          <Popup>
+            <div className="text-center p-2">
+              <h3 className="font-bold">Community Food Bank</h3>
+              <p className="text-sm text-gray-600 mt-1">Fighting hunger in our community</p>
+            </div>
+          </Popup>
+        </Marker>
+        
+        <Marker position={[40.7580, -73.9855]}>
+          <Popup>
+            <div className="text-center p-2">
+              <h3 className="font-bold">Urban Tree Initiative</h3>
+              <p className="text-sm text-gray-600 mt-1">Planting urban green spaces</p>
+            </div>
+          </Popup>
+        </Marker>
       </MapContainer>
 
       {/* Category Filter Pills */}
