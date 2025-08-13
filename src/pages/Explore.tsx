@@ -18,11 +18,28 @@ L.Icon.Default.mergeOptions({
 const createNgoIcon = () => {
   return L.divIcon({
     html: `
-      <div class="w-6 h-6 bg-accent-red rounded-full border-2 border-off-white shadow-lg animate-breathe flex items-center justify-center">
+      <div style="
+        width: 24px; 
+        height: 24px; 
+        background-color: #ef4444; 
+        border-radius: 50%; 
+        border: 2px solid white; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        animation: pulse 2s infinite;
+      ">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
       </div>
+      <style>
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+        }
+      </style>
     `,
     className: '',
     iconSize: [24, 24],
@@ -113,30 +130,32 @@ const Explore = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         />
         
-        {mockNgos.map((ngo) => (
-          <Marker
-            key={ngo.id}
-            position={ngo.position}
-            icon={createNgoIcon()}
-            eventHandlers={{
-              click: () => handleMarkerClick(ngo)
-            }}
-          >
-            <Popup>
-              <div className="text-center p-2">
-                <h3 className="font-bold text-dark-blue">{ngo.name}</h3>
-                <p className="text-sm text-gray-600 mt-1">{ngo.description}</p>
-                <Button 
-                  size="sm" 
-                  className="mt-2 bg-accent-red hover:bg-accent-red-hover"
-                  onClick={() => handleMarkerClick(ngo)}
-                >
-                  View Details
-                </Button>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+        {mockNgos.map((ngo) => {
+          return (
+            <Marker
+              key={ngo.id}
+              position={ngo.position}
+              icon={createNgoIcon()}
+              eventHandlers={{
+                click: () => handleMarkerClick(ngo)
+              }}
+            >
+              <Popup>
+                <div className="text-center p-2">
+                  <h3 className="font-bold text-dark-blue">{ngo.name}</h3>
+                  <p className="text-sm text-gray-600 mt-1">{ngo.description}</p>
+                  <Button 
+                    size="sm" 
+                    className="mt-2 bg-accent-red hover:bg-accent-red-hover"
+                    onClick={() => handleMarkerClick(ngo)}
+                  >
+                    View Details
+                  </Button>
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
       </MapContainer>
 
       {/* Category Filter Pills */}
