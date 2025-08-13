@@ -60,7 +60,7 @@ const Explore = () => {
         className="absolute top-0 left-0 right-0 z-[1000] bg-dark-blue/95 backdrop-blur-sm border-b border-light-dark-blue"
       >
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-4">
               <Button variant="ghost" className="text-off-white hover:bg-light-dark-blue">
                 <MapPin className="w-5 h-5 mr-2" />
@@ -74,6 +74,25 @@ const Explore = () => {
               </span>
             </div>
           </div>
+          
+          {/* Category Filter Pills - Now at top */}
+          <motion.div 
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center justify-center space-x-3"
+          >
+            {['all', 'hunger', 'environment', 'education', 'homelessness'].map((category) => (
+              <Button
+                key={category}
+                variant="secondary"
+                size="sm"
+                className="bg-light-dark-blue/90 backdrop-blur-sm text-off-white hover:bg-accent-red hover:text-white transition-all duration-300 shadow-card capitalize"
+              >
+                {category}
+              </Button>
+            ))}
+          </motion.div>
         </div>
       </motion.div>
 
@@ -103,24 +122,6 @@ const Explore = () => {
         </div>
       </div>
 
-      {/* Category Filter Pills */}
-      <motion.div 
-        initial={{ x: -50, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-[1000] space-y-2"
-      >
-        {['all', 'hunger', 'environment', 'education', 'homelessness'].map((category) => (
-          <Button
-            key={category}
-            variant="secondary"
-            size="sm"
-            className="bg-light-dark-blue/90 backdrop-blur-sm text-off-white hover:bg-accent-red hover:text-white transition-all duration-300 shadow-card capitalize"
-          >
-            {category}
-          </Button>
-        ))}
-      </motion.div>
 
       {/* NGO Info Panel */}
       <AnimatePresence>
