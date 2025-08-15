@@ -13,11 +13,11 @@ L.Icon.Default.mergeOptions({
 });
 
 interface NGO {
-  id: number;
-  name: string;
-  position: [number, number];
-  category: string;
-  volunteersNeeded: number;
+    id: number;
+    name: string;
+    position: [number, number];
+    category: string;
+    volunteersNeeded: number;
   description: string;
   address: string;
   contact: string;
@@ -165,7 +165,7 @@ const Map: React.FC<MapProps> = ({ ngos = [], onMarkerClick }) => {
       ? displayNGOs 
       : displayNGOs.filter(ngo => ngo.category === selectedCategory);
 
-    // Add markers for NGOs
+      // Add markers for NGOs
     filteredNGOs.forEach((ngo) => {
       const marker = L.marker(ngo.position, {
         icon: L.divIcon({
@@ -204,11 +204,11 @@ const Map: React.FC<MapProps> = ({ ngos = [], onMarkerClick }) => {
 
       marker.bindPopup(popup);
 
-      // Add click handler
+        // Add click handler
       marker.on('click', () => {
-        onMarkerClick?.(ngo);
+          onMarkerClick?.(ngo);
+        });
       });
-    });
   };
 
   const searchLocation = () => {
@@ -262,27 +262,27 @@ const Map: React.FC<MapProps> = ({ ngos = [], onMarkerClick }) => {
     }
   }, [ngos, mapInitialized, selectedCategory]);
 
-  return (
+    return (
     <div className="relative w-full h-full">
       {/* Search and Filter Bar */}
       <div className="absolute top-4 left-4 z-10 bg-white rounded-lg shadow-lg p-3 flex flex-col gap-3 min-w-80">
         {/* Search */}
         <div className="flex gap-2">
-          <Input
+            <Input
             type="text"
             placeholder="Search location in Coimbatore..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && searchLocation()}
             className="flex-1"
-          />
-          <Button 
+            />
+            <Button 
             onClick={searchLocation}
             className="bg-accent-red hover:bg-accent-red-hover text-white"
-          >
+            >
             Search
-          </Button>
-        </div>
+            </Button>
+          </div>
 
         {/* Category Filter */}
         <div className="flex flex-wrap gap-2">
