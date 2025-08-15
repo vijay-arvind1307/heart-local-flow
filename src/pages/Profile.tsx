@@ -56,12 +56,12 @@ const Profile = () => {
   const progressPercentage = (userStats.totalPoints / userStats.nextLevelPoints) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-dark">
+    <div className="min-h-screen bg-gradient-dark pt-20">
       {/* Header */}
       <motion.div 
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="bg-dark-blue/50 backdrop-blur-sm border-b border-light-dark-blue"
+        className="bg-dark-blue/50 backdrop-blur-sm border-b border-light-dark-blue sticky top-20 z-10"
       >
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
@@ -73,7 +73,7 @@ const Profile = () => {
         </div>
       </motion.div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8 overflow-y-auto">
         {/* Profile Header */}
         <motion.div 
           initial={{ scale: 0.9, opacity: 0 }}

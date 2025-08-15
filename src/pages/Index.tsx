@@ -9,10 +9,10 @@ import AuthModal from '@/components/AuthModal';
 
 const Index = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authMode, setAuthModal] = useState<'login' | 'signup'>('signup');
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
 
   const openAuthModal = (mode: 'login' | 'signup') => {
-    setAuthModal(mode);
+    setAuthMode(mode);
     setIsAuthModalOpen(true);
   };
 
@@ -48,6 +48,59 @@ const Index = () => {
     { number: "500+", label: "Partner NGOs" },
     { number: "100,000+", label: "Lives Impacted" },
     { number: "25+", label: "Cities Covered" }
+  ];
+
+  const opportunities = [
+    {
+      id: 1,
+      title: "Food Bank Volunteer",
+      organization: "Community Food Bank",
+      location: "Downtown Coimbatore",
+      hours: "4 hours",
+      date: "Tomorrow",
+      category: "Hunger Relief",
+      urgent: true
+    },
+    {
+      id: 2,
+      title: "Tree Planting",
+      organization: "Green Earth Initiative",
+      location: "Central Park",
+      hours: "6 hours",
+      date: "This Weekend",
+      category: "Environment",
+      urgent: false
+    },
+    {
+      id: 3,
+      title: "Student Tutoring",
+      organization: "Youth Education Center",
+      location: "North Campus",
+      hours: "3 hours",
+      date: "Next Week",
+      category: "Education",
+      urgent: true
+    },
+    {
+      id: 4,
+      title: "Animal Shelter Helper",
+      organization: "Paws & Care",
+      location: "West District",
+      hours: "5 hours",
+      date: "This Week",
+      category: "Animal Welfare",
+      urgent: false
+    },
+    {
+      id: 5,
+      title: "Senior Care Assistant",
+      organization: "Golden Years Home",
+      location: "East Side",
+      hours: "4 hours",
+      date: "Ongoing",
+      category: "Healthcare",
+      urgent: true
+    }
   ];
 
   return (
@@ -130,6 +183,81 @@ const Index = () => {
             ))}
           </div>
         </motion.div>
+      </div>
+
+      {/* New Opportunities Section */}
+      <div className="py-20 bg-dark-blue/30">
+        <div className="max-w-7xl mx-auto px-4">
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-off-white mb-6">
+              New <span className="text-accent-red">Opportunities</span>
+            </h2>
+            <p className="text-xl text-text-gray max-w-3xl mx-auto">
+              Discover fresh volunteering opportunities in your area
+            </p>
+          </motion.div>
+
+          {/* Horizontal Scrolling Opportunity Cards */}
+          <div className="relative">
+            <div className="flex overflow-x-auto space-x-4 md:space-x-6 pb-4 scrollbar-hide px-2 md:px-0">
+              {opportunities.map((opportunity, index) => (
+                <motion.div
+                  key={opportunity.id}
+                  initial={{ x: 50, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.8 }}
+                  className="flex-shrink-0 w-72 md:w-80 bg-gradient-card border border-light-dark-blue rounded-xl shadow-card hover:shadow-elegant transition-all duration-300 opportunity-card"
+                >
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold text-off-white mb-2">{opportunity.title}</h3>
+                        <p className="text-accent-red font-medium mb-1">{opportunity.organization}</p>
+                        <div className="flex items-center text-text-gray text-sm mb-3">
+                          <MapPin className="w-4 h-4 mr-1" />
+                          {opportunity.location}
+                        </div>
+                      </div>
+                      {opportunity.urgent && (
+                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                          Urgent
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-sm text-text-gray mb-4">
+                      <span className="flex items-center">
+                        <Clock className="w-4 h-4 mr-1" />
+                        {opportunity.hours}
+                      </span>
+                      <span>{opportunity.date}</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-text-gray bg-light-dark-blue px-2 py-1 rounded">
+                        {opportunity.category}
+                      </span>
+                      <Button 
+                        variant="hero" 
+                        size="sm"
+                        className="bg-accent-red hover:bg-accent-red-hover"
+                      >
+                        Apply Now
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Features Section */}
