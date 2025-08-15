@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Heart, MapPin, User, ArrowRight, Globe, Users, Clock, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import ParticleBackground from '@/components/ParticleBackground';
+import AuthModal from '@/components/AuthModal';
 
 const Index = () => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthModal] = useState<'login' | 'signup'>('signup');
+
+  const openAuthModal = (mode: 'login' | 'signup') => {
+    setAuthModal(mode);
+    setIsAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+
   const features = [
     {
       icon: MapPin,
@@ -179,13 +192,16 @@ const Index = () => {
               Join thousands of volunteers already making a difference in their communities.
             </p>
             
-            <Link to="/explore">
-              <Button variant="hero" size="lg" className="text-xl px-12 py-6 animate-float">
-                <Globe className="w-6 h-6 mr-3" />
-                Start Volunteering Today
-                <ArrowRight className="w-6 h-6 ml-3" />
-              </Button>
-            </Link>
+            <Button 
+              variant="hero" 
+              size="lg" 
+              className="text-xl px-12 py-6 animate-float"
+              onClick={() => openAuthModal('signup')}
+            >
+              <Globe className="w-6 h-6 mr-3" />
+              Start Volunteering Today
+              <ArrowRight className="w-6 h-6 ml-3" />
+            </Button>
           </motion.div>
         </div>
       </div>
@@ -205,6 +221,13 @@ const Index = () => {
            </div>
         </div>
       </footer>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={closeAuthModal}
+        initialMode={authMode}
+      />
     </div>
   );
 };
