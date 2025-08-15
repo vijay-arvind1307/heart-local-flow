@@ -4,6 +4,7 @@ import { MapPin, Heart, Users, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import NgoInfoPanel from '@/components/NgoInfoPanel';
 import Map from '@/components/Map';
+import NotificationStack from '@/components/NotificationStack';
 
 // Updated NGO data structure to match the Map component
 interface NGO {
@@ -171,6 +172,9 @@ const Explore = () => {
           </div>
         </div>
       </motion.div>
+
+      {/* Sliding Notification Stack */}
+      <NotificationStack autoShowInterval={4000} maxNotifications={3} />
     </div>
   );
 };
