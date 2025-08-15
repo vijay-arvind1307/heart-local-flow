@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Heart, MapPin, User, ArrowRight, Globe, Users, Clock, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import heroImage from '@/assets/hero-image.jpg';
+import ParticleBackground from '@/components/ParticleBackground';
 
 const Index = () => {
   const features = [
@@ -38,21 +38,11 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-dark">
-      {/* Hero Section */}
-
+    <div className="min-h-screen">
+      <ParticleBackground />
+      
       {/* Hero Section */}
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <img 
-            src={heroImage} 
-            alt="Volunteers making a difference" 
-            className="w-full h-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-dark-blue/80 to-light-dark-blue/60"></div>
-        </div>
-
         {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
           <motion.div

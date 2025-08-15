@@ -86,32 +86,52 @@ const Explore = () => {
 
   return (
     <div className="relative w-full h-screen bg-dark-blue overflow-hidden">
-      {/* Page Header */}
-      <div className="pt-20 pb-6 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" className="text-off-white hover:bg-light-dark-blue">
-                <MapPin className="w-5 h-5 mr-2" />
-                Explore NGOs in Coimbatore
-              </Button>
-            </div>
-            <div className="flex items-center space-x-2 bg-light-dark-blue/80 backdrop-blur-sm rounded-full px-4 py-2">
-              <Heart className="w-4 h-4 text-accent-red" />
-              <span className="text-off-white text-sm font-medium">
-                {mockNgos.reduce((sum, ngo) => sum + ngo.volunteersNeeded, 0)} volunteers needed
-              </span>
-            </div>
+      {/* Map Layer - Base Layer */}
+      <div className="absolute inset-0 z-0">
+        <Map ngos={mockNgos} onMarkerClick={handleMarkerClick} />
+      </div>
+
+      {/* Top Bar Overlay */}
+      <div className="absolute top-0 left-0 right-0 z-10 p-6">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" className="text-off-white hover:bg-light-dark-blue bg-dark-blue/80 backdrop-blur-sm">
+              <MapPin className="w-5 h-5 mr-2" />
+              Explore NGOs in Coimbatore
+            </Button>
+          </div>
+          <div className="flex items-center space-x-2 bg-light-dark-blue/80 backdrop-blur-sm rounded-full px-4 py-2">
+            <Heart className="w-4 h-4 text-accent-red" />
+            <span className="text-off-white text-sm font-medium">
+              {mockNgos.reduce((sum, ngo) => sum + ngo.volunteersNeeded, 0)} volunteers needed
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Search Card Overlay */}
+      <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10">
+        <motion.div 
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white rounded-lg shadow-lg p-6 min-w-[400px]"
+        >
+          {/* Search Input */}
+          <div className="flex items-center space-x-2 mb-4">
+            <input
+              type="text"
+              placeholder="Search NGOs..."
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-red focus:border-transparent"
+            />
+            <Button className="bg-accent-red hover:bg-accent-red/90 text-white">
+              Search
+            </Button>
           </div>
           
           {/* Category Filter Pills */}
-          <motion.div 
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center justify-center space-x-3"
-          >
-            {['all', 'education', 'healthcare', 'environment', 'women', 'animals'].map((category) => (
+          <div className="flex items-center justify-center space-x-2">
+            {['All', 'Education', 'Healthcare', 'Environment', 'Women', 'Animals'].map((category) => (
               <Button
                 key={category}
                 variant="secondary"
@@ -121,13 +141,8 @@ const Explore = () => {
                 {category}
               </Button>
             ))}
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Interactive Map Background */}
-      <div className="relative flex-1">
-        <Map ngos={mockNgos} onMarkerClick={handleMarkerClick} />
+          </div>
+        </motion.div>
       </div>
 
       {/* NGO Info Panel */}
@@ -150,7 +165,7 @@ const Explore = () => {
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg"
       >
         <div className="flex items-center space-x-4">
           <div className="text-center">
