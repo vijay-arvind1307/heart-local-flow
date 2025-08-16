@@ -1,12 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { User, Heart, Clock, Award, Star, Trophy, Target, Calendar, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { User, Heart, Clock, Award, Star, Trophy, Target, Calendar, MapPin, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import Badge from '@/components/Badge';
 
 const Profile = () => {
+  const navigate = useNavigate();
   const userStats = {
     name: "Alex Chen",
     level: "Community Champion",
@@ -95,6 +97,17 @@ const Profile = () => {
                 <div className="flex-1">
                   <h2 className="text-3xl font-bold text-off-white mb-2">{userStats.name}</h2>
                   <p className="text-accent-red font-semibold mb-4">{userStats.level}</p>
+                  
+                  {/* Dashboard Access Button */}
+                  <div className="mb-4">
+                    <Button 
+                      className="bg-accent-red hover:bg-accent-red-hover text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                      onClick={() => navigate('/ngo-dashboard')}
+                    >
+                      <Building2 className="w-4 h-4 mr-2" />
+                      View My Dashboard
+                    </Button>
+                  </div>
                   
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">

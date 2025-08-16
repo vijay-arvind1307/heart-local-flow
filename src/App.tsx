@@ -13,6 +13,7 @@ import StudentLoginPage from "./pages/StudentLoginPage";
 import NgoLoginPage from "./pages/NgoLoginPage";
 import NgoDashboard from "./pages/NgoDashboard";
 import NgoProfilePage from "./pages/NgoProfilePage";
+import WishlistPage from "./pages/WishlistPage";
 import StatCardDemo from "./pages/StatCardDemo";
 import OpportunityDetailPage from "./pages/OpportunityDetailPage";
 import PrivateRoute from "./components/PrivateRoute";
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/opportunity/:id" element={<OpportunityDetailPage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/ngo-dashboard" element={<NgoDashboard />} />
             <Route path="/stat-card-demo" element={<StatCardDemo />} />
           </Route>

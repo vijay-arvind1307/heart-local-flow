@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Heart, MapPin, User, ArrowRight, Award, BookOpen, LogOut, AlertTriangle } from 'lucide-react';
+import { Heart, MapPin, User, ArrowRight, Award, BookOpen, LogOut, AlertTriangle, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import EmergencyModal from './EmergencyModal';
 
@@ -41,7 +41,7 @@ const Navigation = () => {
         { path: '/explore', label: 'Explore', icon: MapPin },
         { path: '/blog', label: 'Blog', icon: BookOpen },
         { path: '/leaderboard', label: 'Leaderboard', icon: Award },
-        { path: '/ngo-dashboard', label: 'Dashboard', icon: Award },
+        { path: '/wishlist', label: 'Wishlist', icon: Gift },
         { path: '/profile', label: 'Profile', icon: User },
       ];
     }
