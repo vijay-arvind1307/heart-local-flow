@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Heart, MapPin, User, ArrowRight, Award } from 'lucide-react';
+import { Heart, MapPin, User, ArrowRight, Award, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AuthModal from './AuthModal';
 
@@ -31,6 +31,7 @@ const Navigation = () => {
   const navItems = [
     { path: '/', label: 'Home', icon: Heart },
     { path: '/explore', label: 'Explore', icon: MapPin },
+    { path: '/blog', label: 'Blog', icon: BookOpen },
     { path: '/leaderboard', label: 'Leaderboard', icon: Award },
     { path: '/profile', label: 'Profile', icon: User },
   ];

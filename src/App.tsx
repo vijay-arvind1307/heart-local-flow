@@ -11,7 +11,11 @@ import LeaderboardPage from "./pages/LeaderboardPage";
 import AuthChoicePage from "./pages/AuthChoicePage";
 import StudentLoginPage from "./pages/StudentLoginPage";
 import NgoLoginPage from "./pages/NgoLoginPage";
+
 import NotFound from "./pages/NotFound";
+
+import BlogPage from "./pages/BlogPage";
+import ArticlePage from "./pages/ArticlePage";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +34,8 @@ const App = () => (
           <Route path="/get-started" element={<AuthChoicePage />} />
           <Route path="/student-login" element={<StudentLoginPage />} />
           <Route path="/ngo-login" element={<NgoLoginPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/article/:id" element={<ArticlePage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
