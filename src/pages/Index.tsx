@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart, MapPin, User, ArrowRight, Globe, Users, Clock, Award } from 'lucide-react';
+import { Heart, MapPin, User, ArrowRight, Globe, Users, Clock, Award, X, Mail, Phone, Calendar, Clock as ClockIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import ParticleBackground from '@/components/ParticleBackground';
 import AuthModal from '@/components/AuthModal';
+import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null);
+  const [applicationForm, setApplicationForm] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    availability: '',
+    experience: '',
+    motivation: '',
+    preferredDate: ''
+  });
 
   const openAuthModal = (mode: 'login' | 'signup') => {
     setAuthMode(mode);
@@ -23,6 +39,49 @@ const Index = () => {
 
   const handleGetStarted = () => {
     navigate('/get-started');
+  };
+
+  const handleApplyNow = (opportunity: any) => {
+    setSelectedOpportunity(opportunity);
+    setIsApplicationModalOpen(true);
+  };
+
+  const closeApplicationModal = () => {
+    setIsApplicationModalOpen(false);
+    setSelectedOpportunity(null);
+    setApplicationForm({
+      fullName: '',
+      email: '',
+      phone: '',
+      availability: '',
+      experience: '',
+      motivation: '',
+      preferredDate: ''
+    });
+  };
+
+  const handleApplicationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Here you would typically send the application to your backend
+    console.log('Application submitted:', {
+      opportunity: selectedOpportunity,
+      volunteer: applicationForm
+    });
+
+    // Show success message
+    toast({
+      title: "Application Submitted!",
+      description: `Your application for ${selectedOpportunity.title} has been submitted successfully. We'll contact you soon!`,
+      variant: "default",
+    });
+
+    // Close modal and reset form
+    closeApplicationModal();
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setApplicationForm(prev => ({ ...prev, [field]: value }));
   };
 
   const features = [
@@ -52,7 +111,9 @@ const Index = () => {
     { number: "10,000+", label: "Volunteers Connected" },
     { number: "500+", label: "Partner NGOs" },
     { number: "100,000+", label: "Lives Impacted" },
-    { number: "25+", label: "Cities Covered" }
+    { number: "25+", label: "Cities Covered" },
+    { number: "50,000+", label: "Hours Volunteered" },
+    { number: "95%", label: "Satisfaction Rate" }
   ];
 
   const opportunities = [
@@ -166,32 +227,62 @@ const Index = () => {
           </motion.div>
         </div>
 
-        {/* Floating Stats */}
-        <motion.div 
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full max-w-4xl px-4"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.8 + index * 0.1 }}
-                className="bg-light-dark-blue/80 backdrop-blur-sm rounded-lg p-4 text-center shadow-card hover:shadow-elegant transition-all duration-300"
-              >
-                <div className="text-2xl md:text-3xl font-bold text-accent-red mb-1">{stat.number}</div>
-                <div className="text-sm text-text-gray">{stat.label}</div>
-              </motion.div>
-            ))}
+        {/* Floating Stats - Moved to full-width section */}
+      </div>
+
+      {/* Stats Section - Full Width Scrollable */}
+      <div className="pt-0 pb-20 bg-dark-blue/30">
+        <div className="max-w-7xl mx-auto px-4">
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-off-white mb-6">
+              Our <span className="text-accent-red">Impact</span>
+            </h2>
+            <p className="text-xl text-text-gray max-w-3xl mx-auto">
+              See the numbers behind our community's incredible work
+            </p>
+          </motion.div>
+
+          {/* Horizontal Scrolling Stats Layout - Full Width */}
+          <div className="relative">
+            <div className="flex overflow-x-auto space-x-4 md:space-x-6 pb-4 scrollbar-hide px-2 md:px-0">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ x: 50, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.8 }}
+                  className="flex-shrink-0 w-72 md:w-80 bg-gradient-card border border-light-dark-blue rounded-xl shadow-card hover:shadow-elegant transition-all duration-300 opportunity-card"
+                >
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <h3 className="text-2xl md:text-3xl font-bold text-accent-red mb-2">{stat.number}</h3>
+                        <p className="text-off-white font-medium mb-1">{stat.label}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-text-gray bg-light-dark-blue px-2 py-1 rounded">
+                        Impact Stats
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* New Opportunities Section */}
-      <div className="py-20 bg-dark-blue/30">
+      <div className="py-20 bg-dark-blue/50">
         <div className="max-w-7xl mx-auto px-4">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
@@ -253,6 +344,7 @@ const Index = () => {
                         variant="hero" 
                         size="sm"
                         className="bg-accent-red hover:bg-accent-red-hover"
+                        onClick={() => handleApplyNow(opportunity)}
                       >
                         Apply Now
                       </Button>
@@ -361,6 +453,148 @@ const Index = () => {
         onClose={closeAuthModal}
         initialMode={authMode}
       />
+
+      {/* Application Modal */}
+      <AnimatePresence>
+        {isApplicationModalOpen && selectedOpportunity && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={closeApplicationModal}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-gradient-card border border-light-dark-blue rounded-2xl shadow-card p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto scrollbar-hide"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-off-white">
+                    Apply for {selectedOpportunity.title}
+                  </h3>
+                  <p className="text-text-gray mt-1">
+                    {selectedOpportunity.organization} • {selectedOpportunity.location}
+                  </p>
+                </div>
+                <button 
+                  onClick={closeApplicationModal} 
+                  className="text-text-gray hover:text-off-white transition-colors p-2 hover:bg-light-dark-blue rounded-lg"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Application Form */}
+              <form onSubmit={handleApplicationSubmit} className="space-y-4">
+                <div>
+                  <Label htmlFor="fullName" className="text-off-white text-sm font-medium">Full Name *</Label>
+                  <Input
+                    id="fullName"
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={applicationForm.fullName}
+                    onChange={(e) => handleInputChange('fullName', e.target.value)}
+                    required
+                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="email" className="text-off-white text-sm font-medium">Email *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={applicationForm.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    required
+                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="phone" className="text-off-white text-sm font-medium">Phone *</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="+1 (555) 123-4567"
+                    value={applicationForm.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    required
+                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="preferredDate" className="text-off-white text-sm font-medium">Preferred Date *</Label>
+                  <Input
+                    id="preferredDate"
+                    type="date"
+                    value={applicationForm.preferredDate}
+                    onChange={(e) => handleInputChange('preferredDate', e.target.value)}
+                    required
+                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white focus:border-accent-red"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="availability" className="text-off-white text-sm font-medium">Availability *</Label>
+                  <Input
+                    id="availability"
+                    type="text"
+                    placeholder="e.g., Weekends, Evenings, Flexible"
+                    value={applicationForm.availability}
+                    onChange={(e) => handleInputChange('availability', e.target.value)}
+                    required
+                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="experience" className="text-off-white text-sm font-medium">Relevant Experience</Label>
+                  <Textarea
+                    id="experience"
+                    placeholder="Describe any relevant experience you have for this opportunity..."
+                    value={applicationForm.experience}
+                    onChange={(e) => handleInputChange('experience', e.target.value)}
+                    rows={3}
+                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red resize-none"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="motivation" className="text-off-white text-sm font-medium">Why do you want to volunteer? *</Label>
+                  <Textarea
+                    id="motivation"
+                    placeholder="Tell us about your motivation and what you hope to achieve..."
+                    value={applicationForm.motivation}
+                    onChange={(e) => handleInputChange('motivation', e.target.value)}
+                    rows={3}
+                    required
+                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red resize-none"
+                  />
+                </div>
+
+                <div className="pt-4">
+                  <Button 
+                    type="submit" 
+                    variant="hero" 
+                    size="lg" 
+                    className="w-full text-lg px-8 py-4 bg-accent-red hover:bg-accent-red-hover shadow-glow-red"
+                  >
+                    Submit Application
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

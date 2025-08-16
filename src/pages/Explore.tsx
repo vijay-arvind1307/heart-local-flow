@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Heart, Users, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -80,20 +80,60 @@ const mockNgos: NGO[] = [
 
 const Explore = () => {
   const [selectedNgo, setSelectedNgo] = useState<NGO | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [filteredNgos, setFilteredNgos] = useState<NGO[]>(mockNgos);
 
   const handleMarkerClick = (ngo: NGO) => {
     setSelectedNgo(ngo);
   };
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    filterNgos(query, selectedCategory);
+  };
+
+  const handleCategoryFilter = (category: string) => {
+    setSelectedCategory(category);
+    filterNgos(searchQuery, category);
+  };
+
+  const filterNgos = (query: string, category: string) => {
+    let filtered = mockNgos;
+
+    // Filter by search query
+    if (query.trim()) {
+      filtered = filtered.filter(ngo => 
+        ngo.name.toLowerCase().includes(query.toLowerCase()) ||
+        ngo.description.toLowerCase().includes(query.toLowerCase()) ||
+        ngo.category.toLowerCase().includes(query.toLowerCase())
+      );
+    }
+
+    // Filter by category
+    if (category !== 'All') {
+      filtered = filtered.filter(ngo => 
+        ngo.category.toLowerCase() === category.toLowerCase()
+      );
+    }
+
+    setFilteredNgos(filtered);
+  };
+
+  // Update filtered NGOs when component mounts
+  useEffect(() => {
+    setFilteredNgos(mockNgos);
+  }, []);
+
   return (
     <div className="relative w-full h-screen bg-dark-blue overflow-hidden">
       {/* Map Layer - Base Layer */}
-      <div className="absolute inset-0 z-0">
-        <Map ngos={mockNgos} onMarkerClick={handleMarkerClick} />
+      <div className="absolute inset-0 z-10">
+        <Map ngos={filteredNgos} onMarkerClick={handleMarkerClick} />
       </div>
 
       {/* Top Bar Overlay */}
-      <div className="absolute top-0 left-0 right-0 z-10 p-6">
+      <div className="absolute top-0 left-0 right-0 z-20 p-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <Button variant="ghost" className="text-off-white hover:bg-light-dark-blue bg-dark-blue/80 backdrop-blur-sm">
@@ -111,19 +151,21 @@ const Explore = () => {
       </div>
 
       {/* Search Card Overlay */}
-      <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10">
+      <div className="absolute top-24 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
         <motion.div 
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-lg shadow-lg p-6 min-w-[400px]"
+          className="bg-white rounded-lg shadow-lg p-6 min-w-[400px] pointer-events-auto"
         >
           {/* Search Input */}
           <div className="flex items-center space-x-2 mb-4">
             <input
               type="text"
               placeholder="Search NGOs..."
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-red focus:border-transparent"
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-red focus:border-transparent text-gray-900 placeholder:text-gray-500 bg-white"
             />
             <Button className="bg-accent-red hover:bg-accent-red/90 text-white">
               Search
@@ -137,7 +179,12 @@ const Explore = () => {
                 key={category}
                 variant="secondary"
                 size="sm"
-                className="bg-light-dark-blue/90 backdrop-blur-sm text-off-white hover:bg-accent-red hover:text-white transition-all duration-300 shadow-card capitalize"
+                onClick={() => handleCategoryFilter(category)}
+                className={`backdrop-blur-sm transition-all duration-300 shadow-card capitalize ${
+                  selectedCategory === category 
+                    ? 'bg-accent-red text-white hover:bg-accent-red/90' 
+                    : 'bg-light-dark-blue/90 text-off-white hover:bg-accent-red hover:text-white'
+                }`}
               >
                 {category}
               </Button>
@@ -154,9 +201,9 @@ const Explore = () => {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="absolute top-0 right-0 h-full w-96 bg-white shadow-2xl z-10"
+            className="absolute top-0 right-0 h-full w-96 bg-white shadow-2xl z-30"
           >
-                         <NgoInfoPanel ngo={selectedNgo} isVisible={!!selectedNgo} onClose={() => setSelectedNgo(null)} />
+            <NgoInfoPanel ngo={selectedNgo} isVisible={!!selectedNgo} onClose={() => setSelectedNgo(null)} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -170,22 +217,45 @@ const Explore = () => {
       >
         <div className="flex items-center space-x-4">
           <div className="text-center">
-            <div className="text-2xl font-bold text-accent-red">{mockNgos.length}</div>
-            <div className="text-sm text-gray-600">NGOs</div>
+            <div className="text-2xl font-bold text-accent-red">{filteredNgos.length}</div>
+            <div className="text-sm text-gray-600">
+              {searchQuery || selectedCategory !== 'All' ? 'Filtered NGOs' : 'Total NGOs'}
+            </div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-accent-red">
-              {mockNgos.reduce((sum, ngo) => sum + ngo.volunteersNeeded, 0)}
+              {filteredNgos.reduce((sum, ngo) => sum + ngo.volunteersNeeded, 0)}
             </div>
             <div className="text-sm text-gray-600">Volunteers Needed</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-accent-red">
-              {mockNgos.filter(ngo => ngo.category === 'education').length}
+              {filteredNgos.filter(ngo => ngo.category === 'education').length}
             </div>
             <div className="text-sm text-gray-600">Education NGOs</div>
           </div>
         </div>
+        
+        {/* Search Results Indicator */}
+        {(searchQuery || selectedCategory !== 'All') && (
+          <div className="mt-3 pt-3 border-t border-gray-200 text-center">
+            <p className="text-sm text-gray-600">
+              Showing {filteredNgos.length} of {mockNgos.length} NGOs
+              {searchQuery && ` matching "${searchQuery}"`}
+              {selectedCategory !== 'All' && ` in ${selectedCategory}`}
+            </p>
+            <button 
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('All');
+                setFilteredNgos(mockNgos);
+              }}
+              className="text-xs text-accent-red hover:text-accent-red/80 underline mt-1"
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
       </motion.div>
 
       {/* Sliding Notification Stack */}
