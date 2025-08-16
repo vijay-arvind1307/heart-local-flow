@@ -18,7 +18,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ParticleBackground from '@/components/ParticleBackground';
@@ -72,8 +72,8 @@ const getRankIcon = (rank: number) => {
 const mockUsers: User[] = [
   {
     id: '1',
-    name: 'Elena Rodriguez',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
+    name: 'Arjun Sharma',
+    avatar: '',
     totalPoints: 2847,
     volunteerHours: 256,
     completedEvents: 42,
@@ -84,8 +84,8 @@ const mockUsers: User[] = [
   },
   {
     id: '2',
-    name: 'Ben Carter',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026705d',
+    name: 'Priya Patel',
+    avatar: '',
     totalPoints: 2654,
     volunteerHours: 241,
     completedEvents: 38,
@@ -96,8 +96,8 @@ const mockUsers: User[] = [
   },
   {
     id: '3',
-    name: 'Aisha Khan',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026706d',
+    name: 'Ananya Singh',
+    avatar: '',
     totalPoints: 2489,
     volunteerHours: 228,
     completedEvents: 35,
@@ -108,8 +108,8 @@ const mockUsers: User[] = [
   },
   {
     id: '4',
-    name: 'Marcus Chen',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026707d',
+    name: 'Karthik Reddy',
+    avatar: '',
     totalPoints: 2312,
     volunteerHours: 215,
     completedEvents: 32,
@@ -120,8 +120,8 @@ const mockUsers: User[] = [
   },
   {
     id: '5',
-    name: 'Sofia Petrova',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026708d',
+    name: 'Ramesh Kumar',
+    avatar: '',
     totalPoints: 2187,
     volunteerHours: 198,
     completedEvents: 29,
@@ -132,8 +132,8 @@ const mockUsers: User[] = [
   },
   {
     id: '6',
-    name: 'Liam Goldberg',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026709d',
+    name: 'Deepa Verma',
+    avatar: '',
     totalPoints: 1954,
     volunteerHours: 180,
     completedEvents: 26,
@@ -144,8 +144,8 @@ const mockUsers: User[] = [
   },
   {
     id: '7',
-    name: 'Chloe Dubois',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026710d',
+    name: 'Sanjay Gupta',
+    avatar: '',
     totalPoints: 1789,
     volunteerHours: 165,
     completedEvents: 23,
@@ -156,8 +156,8 @@ const mockUsers: User[] = [
   },
   {
     id: '8',
-    name: 'Raj Patel',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026711d',
+    name: 'Meera Iyer',
+    avatar: '',
     totalPoints: 1654,
     volunteerHours: 152,
     completedEvents: 20,
@@ -168,8 +168,8 @@ const mockUsers: User[] = [
   },
   {
     id: '9',
-    name: 'Emma Wilson',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026712d',
+    name: 'Vikram Malhotra',
+    avatar: '',
     totalPoints: 1543,
     volunteerHours: 138,
     completedEvents: 18,
@@ -180,8 +180,8 @@ const mockUsers: User[] = [
   },
   {
     id: '10',
-    name: 'David Kim',
-    avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026713d',
+    name: 'Neha Kapoor',
+    avatar: '',
     totalPoints: 1432,
     volunteerHours: 125,
     completedEvents: 16,
@@ -196,7 +196,7 @@ const mockUsers: User[] = [
 const currentUser: User = {
   id: 'current-user',
   name: 'You',
-  avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026702d',
+  avatar: '',
   totalPoints: 847,
   volunteerHours: 42,
   completedEvents: 8,
@@ -228,9 +228,8 @@ const PodiumCard = ({ user, colors, rankIconColor, isFirst = false }: {
 
     {/* Avatar */}
     <Avatar className={`border-4 border-current mb-4 ${isFirst ? 'w-28 h-28' : 'w-24 h-24'}`}>
-      <AvatarImage src={user.avatar} alt={user.name} />
-      <AvatarFallback className="bg-accent-red text-white font-bold text-lg">
-        {user.name.split(' ').map(n => n[0]).join('')}
+      <AvatarFallback className="bg-indigo-500 text-white font-bold text-lg rounded-full flex items-center justify-center">
+        {user.name.charAt(0)}
       </AvatarFallback>
     </Avatar>
 
@@ -402,9 +401,8 @@ const LeaderboardPage = () => {
 
               {/* Avatar */}
               <Avatar className="w-12 h-12 mx-4 border-2 border-light-dark-blue">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="bg-accent-red text-white font-bold">
-                  {user.name.split(' ').map(n => n[0]).join('')}
+                <AvatarFallback className="bg-gray-700 text-white font-bold rounded-full flex items-center justify-center">
+                  {user.name.charAt(0)}
                 </AvatarFallback>
               </Avatar>
 
@@ -477,9 +475,8 @@ const LeaderboardPage = () => {
 
               {/* Avatar */}
               <Avatar className="w-12 h-12 mx-4 border-2 border-white/50">
-                <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
-                <AvatarFallback className="bg-white text-accent-red font-bold">
-                  {currentUser.name.split(' ').map(n => n[0]).join('')}
+                <AvatarFallback className="bg-white text-accent-red font-bold rounded-full flex items-center justify-center">
+                  {currentUser.name.charAt(0)}
                 </AvatarFallback>
               </Avatar>
 
