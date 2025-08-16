@@ -224,13 +224,13 @@ const StudentLoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-dark-blue flex items-center justify-center p-4">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-purple-500/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-accent-red/20 to-accent-red-hover/20"></div>
         <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 25% 25%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
-                           radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)`
+          backgroundImage: `radial-gradient(circle at 25% 25%, rgba(255, 76, 76, 0.1) 0%, transparent 50%),
+                           radial-gradient(circle at 75% 75%, rgba(255, 76, 76, 0.1) 0%, transparent 50%)`
         }}></div>
       </div>
 
@@ -240,18 +240,18 @@ const StudentLoginPage = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="bg-gray-800 rounded-2xl p-8 border border-gray-700"
+          className="bg-light-dark-blue rounded-2xl p-8 border border-border shadow-card"
         >
           <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-accent-red to-accent-red-hover rounded-full flex items-center justify-center">
               <GraduationCap className="w-8 h-8 text-white" />
             </div>
           </div>
           
-          <h1 className="text-3xl font-bold text-white mb-2 text-center">
+          <h1 className="text-3xl font-bold text-off-white mb-2 text-center">
             {isLogin ? 'Student Login' : 'Student Sign Up'}
           </h1>
-          <p className="text-gray-300 mb-8 text-center">
+          <p className="text-text-gray mb-8 text-center">
             {isLogin 
               ? 'Welcome back! Sign in to access your student dashboard and find volunteering opportunities.'
               : 'Join our community to find volunteering opportunities, track your impact, and connect with NGOs.'
@@ -271,9 +271,9 @@ const StudentLoginPage = () => {
                 >
                   {/* Full Name */}
                   <div className="space-y-2">
-                    <Label htmlFor="fullName" className="text-white">Full Name</Label>
+                    <Label htmlFor="fullName" className="text-off-white">Full Name</Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <User className="absolute left-3 top-3 h-4 w-4 text-text-gray" />
                       <Input
                         id="fullName"
                         type="text"
@@ -282,7 +282,7 @@ const StudentLoginPage = () => {
                         onChange={(e) => handleInputChange('fullName', e.target.value)}
                         onFocus={() => setFocusedField('fullName')}
                         onBlur={() => setFocusedField(null)}
-                        className={`pl-10 ${focusedField === 'fullName' ? 'border-pink-500' : ''} ${
+                        className={`pl-10 bg-input border-border text-off-white placeholder:text-text-gray ${focusedField === 'fullName' ? 'border-accent-red' : ''} ${
                           errors.fullName ? 'border-red-500' : ''
                         }`}
                       />
@@ -297,7 +297,7 @@ const StudentLoginPage = () => {
 
                   {/* Student ID */}
                   <div className="space-y-2">
-                    <Label htmlFor="studentId" className="text-white">Student ID</Label>
+                    <Label htmlFor="studentId" className="text-off-white">Student ID</Label>
                     <Input
                       id="studentId"
                       type="text"
@@ -306,7 +306,7 @@ const StudentLoginPage = () => {
                       onChange={(e) => handleInputChange('studentId', e.target.value)}
                       onFocus={() => setFocusedField('studentId')}
                       onBlur={() => setFocusedField(null)}
-                      className={`${focusedField === 'studentId' ? 'border-pink-500' : ''} ${
+                      className={`bg-input border-border text-off-white placeholder:text-text-gray ${focusedField === 'studentId' ? 'border-accent-red' : ''} ${
                         errors.studentId ? 'border-red-500' : ''
                       }`}
                     />
@@ -321,7 +321,7 @@ const StudentLoginPage = () => {
                   {/* University and Major */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="university" className="text-white">University</Label>
+                      <Label htmlFor="university" className="text-off-white">University</Label>
                       <Input
                         id="university"
                         type="text"
@@ -330,7 +330,7 @@ const StudentLoginPage = () => {
                         onChange={(e) => handleInputChange('university', e.target.value)}
                         onFocus={() => setFocusedField('university')}
                         onBlur={() => setFocusedField(null)}
-                        className={`${focusedField === 'university' ? 'border-pink-500' : ''} ${
+                        className={`bg-input border-border text-off-white placeholder:text-text-gray ${focusedField === 'university' ? 'border-accent-red' : ''} ${
                           errors.university ? 'border-red-500' : ''
                         }`}
                       />
@@ -343,7 +343,7 @@ const StudentLoginPage = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="major" className="text-white">Major</Label>
+                      <Label htmlFor="major" className="text-off-white">Major</Label>
                       <Input
                         id="major"
                         type="text"
@@ -352,7 +352,7 @@ const StudentLoginPage = () => {
                         onChange={(e) => handleInputChange('major', e.target.value)}
                         onFocus={() => setFocusedField('major')}
                         onBlur={() => setFocusedField(null)}
-                        className={`${focusedField === 'major' ? 'border-pink-500' : ''} ${
+                        className={`bg-input border-border text-off-white placeholder:text-text-gray ${focusedField === 'major' ? 'border-accent-red' : ''} ${
                           errors.major ? 'border-red-500' : ''
                         }`}
                       />
@@ -367,20 +367,20 @@ const StudentLoginPage = () => {
 
                   {/* Year of Study */}
                   <div className="space-y-2">
-                    <Label htmlFor="yearOfStudy" className="text-white">Year of Study</Label>
+                    <Label htmlFor="yearOfStudy" className="text-off-white">Year of Study</Label>
                     <select
                       id="yearOfStudy"
                       value={formData.yearOfStudy}
                       onChange={(e) => handleInputChange('yearOfStudy', e.target.value)}
                       onFocus={() => setFocusedField('yearOfStudy')}
                       onBlur={() => setFocusedField(null)}
-                      className={`w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-pink-500 ${
-                        focusedField === 'yearOfStudy' ? 'border-pink-500' : ''
+                      className={`w-full px-3 py-2 bg-input border border-border rounded-md text-off-white focus:outline-none focus:border-accent-red ${
+                        focusedField === 'yearOfStudy' ? 'border-accent-red' : ''
                       } ${errors.yearOfStudy ? 'border-red-500' : ''}`}
                     >
-                      <option value="">Select year of study</option>
+                      <option value="" className="bg-input text-off-white">Select year of study</option>
                       {yearOptions.map((year) => (
-                        <option key={year} value={year}>{year}</option>
+                        <option key={year} value={year} className="bg-input text-off-white">{year}</option>
                       ))}
                     </select>
                     {errors.yearOfStudy && (
@@ -396,9 +396,9 @@ const StudentLoginPage = () => {
 
             {/* Email */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-white">Email</Label>
+              <Label htmlFor="email" className="text-off-white">Email</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-text-gray" />
                 <Input
                   id="email"
                   type="email"
@@ -407,7 +407,7 @@ const StudentLoginPage = () => {
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   onFocus={() => setFocusedField('email')}
                   onBlur={() => setFocusedField(null)}
-                  className={`pl-10 ${focusedField === 'email' ? 'border-pink-500' : ''} ${
+                  className={`pl-10 bg-input border-border text-off-white placeholder:text-text-gray ${focusedField === 'email' ? 'border-accent-red' : ''} ${
                     errors.email ? 'border-red-500' : ''
                   }`}
                 />
@@ -422,9 +422,9 @@ const StudentLoginPage = () => {
 
             {/* Password */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-white">Password</Label>
+              <Label htmlFor="password" className="text-off-white">Password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-text-gray" />
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
@@ -433,14 +433,14 @@ const StudentLoginPage = () => {
                   onChange={(e) => handleInputChange('password', e.target.value)}
                   onFocus={() => setFocusedField('password')}
                   onBlur={() => setFocusedField(null)}
-                  className={`pl-10 pr-10 ${focusedField === 'password' ? 'border-pink-500' : ''} ${
+                  className={`pl-10 pr-10 bg-input border-border text-off-white placeholder:text-text-gray ${focusedField === 'password' ? 'border-accent-red' : ''} ${
                     errors.password ? 'border-red-500' : ''
                   }`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-white transition-colors"
+                  className="absolute right-3 top-3 text-text-gray hover:text-off-white transition-colors"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -464,9 +464,9 @@ const StudentLoginPage = () => {
                   transition={{ duration: 0.3 }}
                   className="space-y-2"
                 >
-                  <Label htmlFor="confirmPassword" className="text-white">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword" className="text-off-white">Confirm Password</Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-text-gray" />
                     <Input
                       id="confirmPassword"
                       type={showConfirmPassword ? 'text' : 'password'}
@@ -475,14 +475,14 @@ const StudentLoginPage = () => {
                       onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
                       onFocus={() => setFocusedField('confirmPassword')}
                       onBlur={() => setFocusedField(null)}
-                      className={`pl-10 pr-10 ${focusedField === 'confirmPassword' ? 'border-pink-500' : ''} ${
+                      className={`pl-10 pr-10 bg-input border-border text-off-white placeholder:text-text-gray ${focusedField === 'confirmPassword' ? 'border-accent-red' : ''} ${
                         errors.confirmPassword ? 'border-red-500' : ''
                       }`}
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-3 text-gray-400 hover:text-white transition-colors"
+                      className="absolute right-3 top-3 text-text-gray hover:text-off-white transition-colors"
                     >
                       {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -501,7 +501,7 @@ const StudentLoginPage = () => {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-pink-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-accent-red to-accent-red-hover hover:from-accent-red-hover hover:to-accent-red text-off-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-glow-red disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <div className="flex items-center justify-center">
@@ -517,10 +517,10 @@ const StudentLoginPage = () => {
             <div className="space-y-3">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-600" />
+                  <div className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-gray-800 text-gray-400">Or continue with</span>
+                  <span className="px-2 bg-light-dark-blue text-text-gray">Or continue with</span>
                 </div>
               </div>
               
@@ -529,7 +529,7 @@ const StudentLoginPage = () => {
                 onClick={handleGoogleSignIn}
                 disabled={isGoogleSigningIn}
                 variant="outline"
-                className="w-full border-gray-600 text-white hover:bg-gray-700 hover:border-gray-500 transition-all duration-300"
+                className="w-full border-border text-off-white hover:bg-input hover:border-accent-red transition-all duration-300"
               >
                 {isGoogleSigningIn ? (
                   <div className="flex items-center justify-center">
@@ -567,10 +567,10 @@ const StudentLoginPage = () => {
               <button
                 type="button"
                 onClick={toggleMode}
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-text-gray hover:text-off-white transition-colors"
               >
                 {isLogin ? "Don't have an account? " : "Already have an account? "}
-                <span className="text-pink-400 font-semibold">
+                <span className="text-accent-red font-semibold">
                   {isLogin ? 'Sign Up' : 'Sign In'}
                 </span>
               </button>
@@ -584,7 +584,7 @@ const StudentLoginPage = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           onClick={() => navigate('/get-started')}
-          className="mt-8 flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-300 mx-auto"
+          className="mt-8 flex items-center space-x-2 text-text-gray hover:text-off-white transition-colors duration-300 mx-auto"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Role Selection</span>
