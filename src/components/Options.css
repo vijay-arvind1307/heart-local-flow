@@ -1,0 +1,23 @@
+.options-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.option-button {
+  background-color: #0D1B2A; /* Your dark blue theme */
+  border: 2px solid #E63946;   /* Your mild red accent */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 25px;
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.option-button:hover {
+  background-color: #E63946;
+  transform: scale(1.05);
+}
