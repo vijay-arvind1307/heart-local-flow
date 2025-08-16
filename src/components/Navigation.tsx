@@ -33,6 +33,7 @@ const Navigation = () => {
     { path: '/explore', label: 'Explore', icon: MapPin },
     { path: '/blog', label: 'Blog', icon: BookOpen },
     { path: '/leaderboard', label: 'Leaderboard', icon: Award },
+    { path: '/ngo-dashboard', label: 'Dashboard', icon: Award },
     { path: '/profile', label: 'Profile', icon: User },
   ];
 

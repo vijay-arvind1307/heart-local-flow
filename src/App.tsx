@@ -11,6 +11,8 @@ import LeaderboardPage from "./pages/LeaderboardPage";
 import AuthChoicePage from "./pages/AuthChoicePage";
 import StudentLoginPage from "./pages/StudentLoginPage";
 import NgoLoginPage from "./pages/NgoLoginPage";
+import NgoDashboard from "./pages/NgoDashboard";
+import StatCardDemo from "./pages/StatCardDemo";
 
 import NotFound from "./pages/NotFound";
 
@@ -34,6 +36,8 @@ const App = () => (
           <Route path="/get-started" element={<AuthChoicePage />} />
           <Route path="/student-login" element={<StudentLoginPage />} />
           <Route path="/ngo-login" element={<NgoLoginPage />} />
+          <Route path="/ngo-dashboard" element={<NgoDashboard />} />
+        <Route path="/stat-card-demo" element={<StatCardDemo />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/article/:id" element={<ArticlePage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
