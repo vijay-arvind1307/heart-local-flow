@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Heart, Users, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,7 +6,7 @@ import NgoInfoPanel from '@/components/NgoInfoPanel';
 import Map from '@/components/Map';
 import NotificationStack from '@/components/NotificationStack';
 
-// Updated NGO data structure to match the Map component
+// Updated NGO data structure to match the NgoInfoPanel component
 interface NGO {
   id: number;
   name: string;
@@ -83,6 +83,9 @@ const Explore = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [filteredNgos, setFilteredNgos] = useState<NGO[]>(mockNgos);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   const handleMarkerClick = (ngo: NGO) => {
     setSelectedNgo(ngo);
@@ -90,12 +93,49 @@ const Explore = () => {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
+    
+    // Show suggestions if there's text
+    if (query.trim().length > 0) {
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+    }
+    
     filterNgos(query, selectedCategory);
   };
 
   const handleCategoryFilter = (category: string) => {
     setSelectedCategory(category);
+    setShowSuggestions(false);
     filterNgos(searchQuery, category);
+  };
+
+  const handleSuggestionClick = (ngo: NGO) => {
+    console.log('=== SUGGESTION CLICKED ===');
+    console.log('NGO:', ngo);
+    
+    // Immediately update the UI
+    setSearchQuery(ngo.name);
+    setSelectedNgo(ngo);
+    setShowSuggestions(false);
+    
+    // Filter the map to show only this NGO
+    filterNgos(ngo.name, selectedCategory);
+    
+    // Show success message
+    setShowSuccessMessage(true);
+    setTimeout(() => setShowSuccessMessage(false), 2000);
+    
+    // Add visual feedback - briefly highlight the selected suggestion
+    const suggestionElement = document.querySelector(`[data-ngo-id="${ngo.id}"]`);
+    if (suggestionElement) {
+      suggestionElement.classList.add('bg-accent-red/10', 'border-accent-red/20');
+      setTimeout(() => {
+        suggestionElement.classList.remove('bg-accent-red/10', 'border-accent-red/20');
+      }, 300);
+    }
+    
+    console.log('=== END SUGGESTION CLICK ===');
   };
 
   const filterNgos = (query: string, category: string) => {
@@ -119,6 +159,20 @@ const Explore = () => {
 
     setFilteredNgos(filtered);
   };
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Update filtered NGOs when component mounts
   useEffect(() => {
@@ -157,20 +211,91 @@ const Explore = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
           className="bg-white rounded-lg shadow-lg p-6 min-w-[400px] pointer-events-auto"
+          ref={searchContainerRef}
         >
           {/* Search Input */}
-          <div className="flex items-center space-x-2 mb-4">
-            <input
-              type="text"
-              placeholder="Search NGOs..."
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-red focus:border-transparent text-gray-900 placeholder:text-gray-500 bg-white"
-            />
+          <div className="flex items-center space-x-2 mb-4 relative">
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                placeholder="Search NGOs..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                onFocus={() => {
+                  if (searchQuery.trim().length > 0) {
+                    setShowSuggestions(true);
+                  }
+                }}
+                onBlur={() => {
+                  // Delay hiding suggestions to allow clicks
+                  setTimeout(() => {
+                    setShowSuggestions(false);
+                  }, 300);
+                }}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-red focus:border-transparent text-gray-900 placeholder:text-gray-500 bg-white"
+              />
+              {/* Selected NGO Indicator */}
+              {selectedNgo && (
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                  <div className="w-2 h-2 bg-accent-red rounded-full animate-pulse"></div>
+                </div>
+              )}
+            </div>
             <Button className="bg-accent-red hover:bg-accent-red/90 text-white">
               Search
             </Button>
+            
+            {/* Search Suggestions Dropdown */}
+            {showSuggestions && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-48 overflow-y-auto">
+                {mockNgos
+                  .filter(ngo => 
+                    ngo.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    ngo.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    ngo.category.toLowerCase().includes(searchQuery.toLowerCase())
+                  )
+                  .slice(0, 5) // Show max 5 suggestions
+                  .map((ngo) => (
+                    <div
+                      key={ngo.id}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleSuggestionClick(ngo);
+                      }}
+                      className="px-3 py-2 hover:bg-accent-red/5 hover:border-l-4 hover:border-l-accent-red cursor-pointer border-b border-gray-100 last:border-b-0 transition-all duration-200 group"
+                      data-ngo-id={ngo.id}
+                    >
+                      <div className="font-medium text-gray-900 group-hover:text-accent-red transition-colors">{ngo.name}</div>
+                      <div className="text-sm text-gray-500 capitalize group-hover:text-accent-red/70 transition-colors">{ngo.category}</div>
+                    </div>
+                  ))}
+                {mockNgos.filter(ngo => 
+                  ngo.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  ngo.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  ngo.category.toLowerCase().includes(searchQuery.toLowerCase())
+                ).length === 0 && (
+                  <div className="px-3 py-2 text-gray-500 text-sm">
+                    No NGOs found matching "{searchQuery}"
+                  </div>
+                )}
+              </div>
+            )}
           </div>
+          
+          {/* Success Message */}
+          {showSuccessMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="mb-3 p-2 bg-green-50 border border-green-200 rounded-md text-center"
+            >
+              <span className="text-green-700 text-sm">
+                ✓ {selectedNgo?.name} selected! Details panel opened.
+              </span>
+            </motion.div>
+          )}
           
           {/* Category Filter Pills */}
           <div className="flex items-center justify-center space-x-2">
@@ -196,15 +321,11 @@ const Explore = () => {
       {/* NGO Info Panel */}
       <AnimatePresence>
         {selectedNgo && (
-          <motion.div
-            initial={{ x: '100%', opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '100%', opacity: 0 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="absolute top-0 right-0 h-full w-96 bg-white shadow-2xl z-30"
-          >
-            <NgoInfoPanel ngo={selectedNgo} isVisible={!!selectedNgo} onClose={() => setSelectedNgo(null)} />
-          </motion.div>
+          <NgoInfoPanel 
+            ngo={selectedNgo} 
+            isVisible={!!selectedNgo} 
+            onClose={() => setSelectedNgo(null)} 
+          />
         )}
       </AnimatePresence>
 
