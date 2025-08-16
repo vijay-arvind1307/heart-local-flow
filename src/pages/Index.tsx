@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Heart, MapPin, User, ArrowRight, Globe, Users, Clock, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import ParticleBackground from '@/components/ParticleBackground';
 import AuthModal from '@/components/AuthModal';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
 
@@ -18,6 +19,10 @@ const Index = () => {
 
   const closeAuthModal = () => {
     setIsAuthModalOpen(false);
+  };
+
+  const handleGetStarted = () => {
+    navigate('/get-started');
   };
 
   const features = [
@@ -324,7 +329,7 @@ const Index = () => {
               variant="hero" 
               size="lg" 
               className="text-xl px-12 py-6 animate-float"
-              onClick={() => openAuthModal('signup')}
+              onClick={handleGetStarted}
             >
               <Globe className="w-6 h-6 mr-3" />
               Start Volunteering Today

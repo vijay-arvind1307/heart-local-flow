@@ -8,6 +8,9 @@ import Index from "./pages/Index";
 import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import AuthChoicePage from "./pages/AuthChoicePage";
+import StudentLoginPage from "./pages/StudentLoginPage";
+import NgoLoginPage from "./pages/NgoLoginPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +27,9 @@ const App = () => (
           <Route path="/explore" element={<Explore />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
+          <Route path="/get-started" element={<AuthChoicePage />} />
+          <Route path="/student-login" element={<StudentLoginPage />} />
+          <Route path="/ngo-login" element={<NgoLoginPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

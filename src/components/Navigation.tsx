@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Heart, MapPin, User, ArrowRight, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AuthModal from './AuthModal';
 
 const Navigation = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   
@@ -21,6 +22,10 @@ const Navigation = () => {
 
   const closeAuthModal = () => {
     setIsAuthModalOpen(false);
+  };
+
+  const handleGetStarted = () => {
+    navigate('/get-started');
   };
 
   const navItems = [
@@ -87,7 +92,7 @@ const Navigation = () => {
                 variant="hero" 
                 size="sm"
                 className="bg-accent-red hover:bg-accent-red-hover text-white shadow-lg"
-                onClick={() => openAuthModal('signup')}
+                onClick={handleGetStarted}
               >
                 Get Started
                 <ArrowRight className="w-4 h-4 ml-2" />
