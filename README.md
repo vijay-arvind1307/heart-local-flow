@@ -1,73 +1,70 @@
-# Welcome to your Lovable project
+# Ripple Factor
 
-## Project info
+A platform to connect student volunteers with local NGOs in Tier 2 cities in India. Track your impact, earn badges, and join a community of changemakers.
 
-**URL**: https://lovable.dev/projects/94ed986f-a40b-4b74-a4c8-204f874f13f4
+## 🌟 Features
 
-## How can I edit this code?
+### For Students
+- **Find Verified Volunteering**: Discover opportunities with local NGOs
+- **Real-time Blood Donation Network**: Connect with urgent blood donation requests
+- **Impact Tracking**: Monitor your volunteer hours and earn points
+- **Badge System**: Unlock achievements as you make a difference
+- **Community**: Connect with like-minded volunteers
 
-There are several ways of editing your application.
+### For NGOs
+- **Direct Access to Volunteers**: Connect with motivated students
+- **Opportunity Posting**: Share your needs with the community
+- **Volunteer Management**: Track and manage volunteer engagement
+- **Impact Reporting**: Measure and showcase your community impact
 
-**Use Lovable**
+## 🚀 Getting Started
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/94ed986f-a40b-4b74-a4c8-204f874f13f4) and start prompting.
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone <YOUR_REPOSITORY_URL>
+cd ripple-factor
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:5173`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🛠️ Tech Stack
 
-**Use GitHub Codespaces**
+- **Frontend**: React 18 + TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Build Tool**: Vite
+- **Authentication**: Firebase Auth
+- **Database**: Firebase Firestore
+- **Maps**: Leaflet.js
+- **AI Chat**: OpenAI GPT-4
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📱 Available Scripts
 
-## What technologies are used for this project?
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
 
-This project is built with:
+## 🌍 Contributing
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+We welcome contributions! Please feel free to submit issues and pull requests.
 
-## How can I deploy this project?
+## 📄 License
 
-Simply open [Lovable](https://lovable.dev/projects/94ed986f-a40b-4b74-a4c8-204f874f13f4) and click on Share -> Publish.
+This project is licensed under the MIT License.
 
-## Can I connect a custom domain to my Lovable project?
+## 🤝 Support
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+If you have any questions or need support, please open an issue in this repository.
