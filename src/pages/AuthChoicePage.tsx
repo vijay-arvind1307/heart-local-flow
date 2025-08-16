@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { GraduationCap, Building2, Heart } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 const AuthChoicePage = () => {
   const navigate = useNavigate();
@@ -38,50 +39,64 @@ const AuthChoicePage = () => {
 
         <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
           {/* Student Card */}
-          <motion.div
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 20px 40px rgba(236, 72, 153, 0.3)"
-            }}
-            className="bg-gray-800 rounded-2xl p-8 cursor-pointer border border-gray-700 hover:border-pink-500/50 transition-all duration-300"
-            onClick={handleStudentChoice}
-          >
-            <div className="flex flex-col items-center space-y-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-                <GraduationCap className="w-10 h-10 text-white" />
-              </div>
-              <h2 className="text-2xl font-semibold text-white">I'm a Student</h2>
-              <p className="text-gray-300 text-center">
-                Join our community to find volunteering opportunities, track your impact, and connect with NGOs.
-              </p>
-            </div>
-          </motion.div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <motion.div
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 20px 40px rgba(236, 72, 153, 0.3)"
+                }}
+                className="bg-gray-800 rounded-2xl p-8 cursor-pointer border border-gray-700 hover:border-pink-500/50 transition-all duration-300"
+                onClick={handleStudentChoice}
+              >
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <GraduationCap className="w-10 h-10 text-white" />
+                  </div>
+                  <h2 className="text-2xl font-semibold text-white">I'm a Student</h2>
+                  <p className="text-gray-300 text-center">
+                    Join our community to find volunteering opportunities, track your impact, and connect with NGOs.
+                  </p>
+                </div>
+              </motion.div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Click to go to the student login page.</p>
+            </TooltipContent>
+          </Tooltip>
 
           {/* NGO Card */}
-          <motion.div
-            initial={{ x: 50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 20px 40px rgba(236, 72, 153, 0.3)"
-            }}
-            className="bg-gray-800 rounded-2xl p-8 cursor-pointer border border-gray-700 hover:border-pink-500/50 transition-all duration-300"
-            onClick={handleNgoChoice}
-          >
-            <div className="flex flex-col items-center space-y-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
-                <Building2 className="w-10 h-10 text-white" />
-              </div>
-              <h2 className="text-2xl font-semibold text-white">I'm an NGO</h2>
-              <p className="text-gray-300 text-center">
-                Post opportunities, manage volunteers, and grow your impact in the community.
-              </p>
-            </div>
-          </motion.div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <motion.div
+                initial={{ x: 50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: "0 20px 40px rgba(236, 72, 153, 0.3)"
+                }}
+                className="bg-gray-800 rounded-2xl p-8 cursor-pointer border border-gray-700 hover:border-pink-500/50 transition-all duration-300"
+                onClick={handleNgoChoice}
+              >
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <Building2 className="w-10 h-10 text-white" />
+                  </div>
+                  <h2 className="text-2xl font-semibold text-white">I'm an NGO</h2>
+                  <p className="text-gray-300 text-center">
+                    Post opportunities, manage volunteers, and grow your impact in the community.
+                  </p>
+                </div>
+              </motion.div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Click to go to the NGO login page.</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
 
         {/* Back Button */}
