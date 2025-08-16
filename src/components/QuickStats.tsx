@@ -159,7 +159,7 @@ const QuickStats: React.FC<QuickStatsProps> = ({
     {
       id: 'donations',
       label: 'Donations Received',
-      value: `$${stats.donations.toLocaleString()}`,
+      value: `₹${stats.donations.toLocaleString()}`,
       icon: <DollarSign className="w-8 h-8" />,
       color: 'text-amber-400',
       bgColor: 'bg-amber-500/10',

@@ -8,12 +8,17 @@ import {
   Settings,
   Plus,
   TrendingUp,
-  Activity
+  Activity,
+  Gift,
+  Trash2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import QuickStats, { SummaryStats } from '@/components/QuickStats';
 import ParticleBackground from '@/components/ParticleBackground';
 
@@ -64,6 +69,7 @@ const NgoDashboard = () => {
             <TabsTrigger value="overview" className="text-off-white">Overview</TabsTrigger>
             <TabsTrigger value="events" className="text-off-white">Events</TabsTrigger>
             <TabsTrigger value="volunteers" className="text-off-white">Volunteers</TabsTrigger>
+            <TabsTrigger value="wishlist" className="text-off-white">Manage Wishlist</TabsTrigger>
             <TabsTrigger value="analytics" className="text-off-white">Analytics</TabsTrigger>
           </TabsList>
 
@@ -103,7 +109,7 @@ const NgoDashboard = () => {
                     {[
                       { action: 'New volunteer joined', time: '2 hours ago', type: 'volunteer' },
                       { action: 'Event "Food Drive" completed', time: '1 day ago', type: 'event' },
-                      { action: 'Received $500 donation', time: '2 days ago', type: 'donation' },
+                      { action: 'Received ₹500 donation', time: '2 days ago', type: 'donation' },
                       { action: 'New event "Tree Planting" created', time: '3 days ago', type: 'event' },
                                          ].map((item, index) => (
                        <motion.div 
@@ -203,6 +209,123 @@ const NgoDashboard = () => {
                 </Button>
               </div>
               <QuickStats showTrends={true} compact={false} />
+            </motion.div>
+          </TabsContent>
+
+          <TabsContent value="wishlist" className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold">Manage Wishlist</h2>
+                <Badge variant="outline" className="border-orange-400 text-orange-400 bg-orange-500/10">
+                  <Gift className="w-3 h-3 mr-1" />
+                  In-Kind Donations
+                </Badge>
+              </div>
+              
+              {/* Current Wishlist Items */}
+              <Card className="border-2 border-orange-400/30 bg-gradient-card hover:border-orange-400/60 transition-all duration-300">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Gift className="w-5 h-5 text-orange-400" />
+                    Current Wishlist Items
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {/* Sample wishlist items - will be replaced with Firestore data */}
+                    <div className="flex items-center justify-between p-4 bg-light-dark-blue/50 rounded-lg border border-orange-400/20">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-off-white">Blankets</h3>
+                        <p className="text-sm text-text-gray">Warm blankets for winter shelter</p>
+                        <div className="flex items-center gap-4 mt-2">
+                          <span className="text-sm text-orange-400">Quantity: 50</span>
+                          <span className="text-sm text-emerald-400">Pledged: 15</span>
+                        </div>
+                      </div>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="border-red-500 text-red-400 hover:bg-red-500 hover:text-white"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </Button>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-4 bg-light-dark-blue/50 rounded-lg border border-orange-400/20">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-off-white">School Supplies</h3>
+                        <p className="text-sm text-text-gray">Notebooks, pens, and backpacks</p>
+                        <div className="flex items-center gap-4 mt-2">
+                          <span className="text-sm text-orange-400">Quantity: 100</span>
+                          <span className="text-sm text-emerald-400">Pledged: 45</span>
+                        </div>
+                      </div>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="border-red-500 text-red-400 hover:bg-red-500 hover:text-white"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Add New Item Form */}
+              <Card className="border-2 border-blue-400/30 bg-gradient-card hover:border-blue-400/60 transition-all duration-300">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Plus className="w-5 h-5 text-blue-400" />
+                    Add New Wishlist Item
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="itemName" className="text-off-white">Item Name</Label>
+                        <Input 
+                          id="itemName" 
+                          placeholder="e.g., Blankets, School Supplies"
+                          className="bg-light-dark-blue border-light-dark-blue text-off-white placeholder:text-text-gray"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="quantity" className="text-off-white">Quantity Needed</Label>
+                        <Input 
+                          id="quantity" 
+                          type="number" 
+                          placeholder="e.g., 50"
+                          className="bg-light-dark-blue border-light-dark-blue text-off-white placeholder:text-text-gray"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="description" className="text-off-white">Description</Label>
+                      <Textarea 
+                        id="description" 
+                        placeholder="Brief description of the item and why it's needed..."
+                        rows={3}
+                        className="bg-light-dark-blue border-light-dark-blue text-off-white placeholder:text-text-gray resize-none"
+                      />
+                    </div>
+                    <Button 
+                      type="submit" 
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Item
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
             </motion.div>
           </TabsContent>
 

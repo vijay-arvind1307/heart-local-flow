@@ -46,7 +46,7 @@ const StatCardDemo = () => {
     },
     {
       icon: <DollarSign className="w-8 h-8" />,
-      value: "$15,420",
+      value: "₹15,420",
       label: "Donations Received",
       description: "Financial contributions",
       color: "text-amber-400",

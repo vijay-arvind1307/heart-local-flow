@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Building2, ArrowLeft, Eye, EyeOff, Mail, Lock, User, Loader2, AlertCircle, MapPin, Phone, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,6 +32,10 @@ interface NgoFormData {
 
 const NgoLoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get the redirect path from location state, or default to profile
+  const from = (location.state as any)?.from?.pathname || '/blog';
   const { toast } = useToast();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -153,7 +157,7 @@ const NgoLoginPage = () => {
           description: `Signed in as ${result.user.email}`,
           variant: "default",
         });
-        navigate('/profile');
+        navigate(from);
       } else {
         // Handle signup
         const result = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
@@ -172,7 +176,7 @@ const NgoLoginPage = () => {
           description: `Welcome ${formData.organizationName}! Your NGO account has been created.`,
           variant: "default",
         });
-        navigate('/profile');
+        navigate(from);
       }
     } catch (error: any) {
       console.error('Authentication error:', error);

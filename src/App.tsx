@@ -12,7 +12,10 @@ import AuthChoicePage from "./pages/AuthChoicePage";
 import StudentLoginPage from "./pages/StudentLoginPage";
 import NgoLoginPage from "./pages/NgoLoginPage";
 import NgoDashboard from "./pages/NgoDashboard";
+import NgoProfilePage from "./pages/NgoProfilePage";
 import StatCardDemo from "./pages/StatCardDemo";
+import OpportunityDetailPage from "./pages/OpportunityDetailPage";
+import PrivateRoute from "./components/PrivateRoute";
 
 import NotFound from "./pages/NotFound";
 
@@ -29,17 +32,25 @@ const App = () => (
       <BrowserRouter>
         <Navigation />
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Index />} />
           <Route path="/explore" element={<Explore />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/get-started" element={<AuthChoicePage />} />
           <Route path="/student-login" element={<StudentLoginPage />} />
           <Route path="/ngo-login" element={<NgoLoginPage />} />
-          <Route path="/ngo-dashboard" element={<NgoDashboard />} />
-        <Route path="/stat-card-demo" element={<StatCardDemo />} />
+          <Route path="/ngo/:ngoId" element={<NgoProfilePage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/article/:id" element={<ArticlePage />} />
+          
+          {/* Protected Routes */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/opportunity/:id" element={<OpportunityDetailPage />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/ngo-dashboard" element={<NgoDashboard />} />
+            <Route path="/stat-card-demo" element={<StatCardDemo />} />
+          </Route>
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

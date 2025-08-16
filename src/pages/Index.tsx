@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart, MapPin, User, ArrowRight, Globe, Users, Clock, Award, X, Mail, Phone, Calendar, Clock as ClockIcon } from 'lucide-react';
+import { Heart, MapPin, User, ArrowRight, Globe, Users, Clock, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+
 import ParticleBackground from '@/components/ParticleBackground';
 import AuthModal from '@/components/AuthModal';
 import { useToast } from '@/hooks/use-toast';
@@ -16,17 +14,7 @@ const Index = () => {
   const { toast } = useToast();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
-  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
-  const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null);
-  const [applicationForm, setApplicationForm] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    availability: '',
-    experience: '',
-    motivation: '',
-    preferredDate: ''
-  });
+
 
   const openAuthModal = (mode: 'login' | 'signup') => {
     setAuthMode(mode);
@@ -42,47 +30,11 @@ const Index = () => {
   };
 
   const handleApplyNow = (opportunity: any) => {
-    setSelectedOpportunity(opportunity);
-    setIsApplicationModalOpen(true);
+    // Navigate to the opportunity detail page
+    navigate(`/opportunity/${opportunity.id}`);
   };
 
-  const closeApplicationModal = () => {
-    setIsApplicationModalOpen(false);
-    setSelectedOpportunity(null);
-    setApplicationForm({
-      fullName: '',
-      email: '',
-      phone: '',
-      availability: '',
-      experience: '',
-      motivation: '',
-      preferredDate: ''
-    });
-  };
 
-  const handleApplicationSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Here you would typically send the application to your backend
-    console.log('Application submitted:', {
-      opportunity: selectedOpportunity,
-      volunteer: applicationForm
-    });
-
-    // Show success message
-    toast({
-      title: "Application Submitted!",
-      description: `Your application for ${selectedOpportunity.title} has been submitted successfully. We'll contact you soon!`,
-      variant: "default",
-    });
-
-    // Close modal and reset form
-    closeApplicationModal();
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    setApplicationForm(prev => ({ ...prev, [field]: value }));
-  };
 
   const features = [
     {
@@ -454,147 +406,7 @@ const Index = () => {
         initialMode={authMode}
       />
 
-      {/* Application Modal */}
-      <AnimatePresence>
-        {isApplicationModalOpen && selectedOpportunity && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-            onClick={closeApplicationModal}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="bg-gradient-card border border-light-dark-blue rounded-2xl shadow-card p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto scrollbar-hide"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-off-white">
-                    Apply for {selectedOpportunity.title}
-                  </h3>
-                  <p className="text-text-gray mt-1">
-                    {selectedOpportunity.organization} • {selectedOpportunity.location}
-                  </p>
-                </div>
-                <button 
-                  onClick={closeApplicationModal} 
-                  className="text-text-gray hover:text-off-white transition-colors p-2 hover:bg-light-dark-blue rounded-lg"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
 
-              {/* Application Form */}
-              <form onSubmit={handleApplicationSubmit} className="space-y-4">
-                <div>
-                  <Label htmlFor="fullName" className="text-off-white text-sm font-medium">Full Name *</Label>
-                  <Input
-                    id="fullName"
-                    type="text"
-                    placeholder="Enter your full name"
-                    value={applicationForm.fullName}
-                    onChange={(e) => handleInputChange('fullName', e.target.value)}
-                    required
-                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="email" className="text-off-white text-sm font-medium">Email *</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="your.email@example.com"
-                    value={applicationForm.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    required
-                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="phone" className="text-off-white text-sm font-medium">Phone *</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="+1 (555) 123-4567"
-                    value={applicationForm.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
-                    required
-                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="preferredDate" className="text-off-white text-sm font-medium">Preferred Date *</Label>
-                  <Input
-                    id="preferredDate"
-                    type="date"
-                    value={applicationForm.preferredDate}
-                    onChange={(e) => handleInputChange('preferredDate', e.target.value)}
-                    required
-                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white focus:border-accent-red"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="availability" className="text-off-white text-sm font-medium">Availability *</Label>
-                  <Input
-                    id="availability"
-                    type="text"
-                    placeholder="e.g., Weekends, Evenings, Flexible"
-                    value={applicationForm.availability}
-                    onChange={(e) => handleInputChange('availability', e.target.value)}
-                    required
-                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="experience" className="text-off-white text-sm font-medium">Relevant Experience</Label>
-                  <Textarea
-                    id="experience"
-                    placeholder="Describe any relevant experience you have for this opportunity..."
-                    value={applicationForm.experience}
-                    onChange={(e) => handleInputChange('experience', e.target.value)}
-                    rows={3}
-                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red resize-none"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="motivation" className="text-off-white text-sm font-medium">Why do you want to volunteer? *</Label>
-                  <Textarea
-                    id="motivation"
-                    placeholder="Tell us about your motivation and what you hope to achieve..."
-                    value={applicationForm.motivation}
-                    onChange={(e) => handleInputChange('motivation', e.target.value)}
-                    rows={3}
-                    required
-                    className="bg-light-dark-blue/50 border-light-dark-blue text-off-white placeholder:text-text-gray focus:border-accent-red resize-none"
-                  />
-                </div>
-
-                <div className="pt-4">
-                  <Button 
-                    type="submit" 
-                    variant="hero" 
-                    size="lg" 
-                    className="w-full text-lg px-8 py-4 bg-accent-red hover:bg-accent-red-hover shadow-glow-red"
-                  >
-                    Submit Application
-                  </Button>
-                </div>
-              </form>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

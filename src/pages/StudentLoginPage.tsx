@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { GraduationCap, ArrowLeft, Eye, EyeOff, Mail, Lock, User, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -28,6 +28,10 @@ interface StudentFormData {
 
 const StudentLoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get the redirect path from location state, or default to profile
+  const from = (location.state as any)?.from?.pathname || '/blog';
   const { toast } = useToast();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -119,7 +123,7 @@ const StudentLoginPage = () => {
           description: `Signed in as ${result.user.email}`,
           variant: "default",
         });
-        navigate('/profile');
+        navigate(from);
       } else {
         // Handle signup
         const result = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
@@ -138,7 +142,7 @@ const StudentLoginPage = () => {
           description: `Welcome ${formData.fullName}! Your student account has been created.`,
           variant: "default",
         });
-        navigate('/profile');
+        navigate(from);
       }
     } catch (error: any) {
       console.error('Authentication error:', error);
@@ -183,7 +187,7 @@ const StudentLoginPage = () => {
         variant: "default",
       });
       
-      navigate('/profile');
+      navigate(from);
       
     } catch (error: any) {
       console.error('Google Sign-In error:', error);
