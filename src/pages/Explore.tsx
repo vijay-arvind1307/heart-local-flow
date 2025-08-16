@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import NgoInfoPanel from '@/components/NgoInfoPanel';
 import Map from '@/components/Map';
 import NotificationStack from '@/components/NotificationStack';
+import { ngoData } from '@/data/ngoData';
 
 // Updated NGO data structure to match the NgoInfoPanel component
 interface NGO {
@@ -19,64 +20,30 @@ interface NGO {
   urgentNeeds: string[];
 }
 
-// Sample Coimbatore NGOs data
-const mockNgos: NGO[] = [
-  {
-    id: 1,
-    name: "Coimbatore Education Trust",
-    description: "Providing quality education to underprivileged children in Coimbatore",
-    position: [11.0168, 76.9558],
-    category: "education",
-    volunteersNeeded: 15,
-    address: "RS Puram, Coimbatore",
-    contact: "+91-422-1234567",
-    urgentNeeds: ["Math tutors", "English teachers", "Computer instructors"]
-  },
-  {
-    id: 2,
-    name: "Coimbatore Healthcare Foundation",
-    description: "Free medical camps and healthcare services for rural communities",
-    position: [11.0189, 76.9565],
-    category: "healthcare",
-    volunteersNeeded: 20,
-    address: "Peelamedu, Coimbatore",
-    contact: "+91-422-2345678",
-    urgentNeeds: ["Doctors", "Nurses", "Medical assistants"]
-  },
-  {
-    id: 3,
-    name: "Coimbatore Environmental Society",
-    description: "Tree planting and environmental conservation in Coimbatore",
-    position: [11.0147, 76.9541],
-    category: "environment",
-    volunteersNeeded: 12,
-    address: "Saibaba Colony, Coimbatore",
-    contact: "+91-422-3456789",
-    urgentNeeds: ["Tree planters", "Environmental educators", "Cleanup volunteers"]
-  },
-  {
-    id: 4,
-    name: "Coimbatore Women Empowerment",
-    description: "Skill development and empowerment programs for women",
-    position: [11.0201, 76.9572],
-    category: "women",
-    volunteersNeeded: 18,
-    address: "Race Course, Coimbatore",
-    contact: "+91-422-4567890",
-    urgentNeeds: ["Skill trainers", "Counselors", "Administrative support"]
-  },
-  {
-    id: 5,
-    name: "Coimbatore Animal Welfare",
-    description: "Rescue and care for stray animals in Coimbatore",
-    position: [11.0123, 76.9534],
-    category: "animals",
-    volunteersNeeded: 10,
-    address: "Singanallur, Coimbatore",
-    contact: "+91-422-5678901",
-    urgentNeeds: ["Animal caretakers", "Veterinary assistants", "Fundraising volunteers"]
-  }
-];
+// Convert imported ngoData to match the NGO interface
+const mockNgos: NGO[] = ngoData.map(ngo => ({
+  id: ngo.id,
+  name: ngo.name,
+  description: `${ngo.name} - Working for ${ngo.category.toLowerCase()} in Coimbatore`,
+  position: [ngo.latitude, ngo.longitude] as [number, number],
+  category: ngo.category.toLowerCase().replace(' ', ''),
+  volunteersNeeded: Math.floor(Math.random() * 20) + 5, // Random number between 5-25
+  address: `${ngo.name.split(' ')[0]}, Coimbatore`,
+  contact: `+91-422-${Math.floor(Math.random() * 9000000) + 1000000}`,
+  urgentNeeds: getUrgentNeedsByCategory(ngo.category)
+}));
+
+// Helper function to generate urgent needs based on category
+function getUrgentNeedsByCategory(category: string): string[] {
+  const needsByCategory = {
+    'Environment': ['Tree planters', 'Environmental educators', 'Cleanup volunteers'],
+    'Education': ['Math tutors', 'English teachers', 'Computer instructors'],
+    'Healthcare': ['Doctors', 'Nurses', 'Medical assistants'],
+    'Women Empowerment': ['Skill trainers', 'Counselors', 'Administrative support'],
+    'Animal Welfare': ['Animal caretakers', 'Veterinary assistants', 'Fundraising volunteers']
+  };
+  return needsByCategory[category as keyof typeof needsByCategory] || ['General volunteers'];
+}
 
 const Explore = () => {
   const [selectedNgo, setSelectedNgo] = useState<NGO | null>(null);
@@ -152,9 +119,17 @@ const Explore = () => {
 
     // Filter by category
     if (category !== 'All') {
-      filtered = filtered.filter(ngo => 
-        ngo.category.toLowerCase() === category.toLowerCase()
-      );
+      const categoryMap: { [key: string]: string } = {
+        'Education': 'education',
+        'Healthcare': 'healthcare',
+        'Environment': 'environment',
+        'Women Empowerment': 'womenempowerment',
+        'Animal Welfare': 'animalwelfare'
+      };
+      const categoryKey = categoryMap[category];
+      if (categoryKey) {
+        filtered = filtered.filter(ngo => ngo.category === categoryKey);
+      }
     }
 
     setFilteredNgos(filtered);
@@ -299,7 +274,7 @@ const Explore = () => {
           
           {/* Category Filter Pills */}
           <div className="flex items-center justify-center space-x-2">
-            {['All', 'Education', 'Healthcare', 'Environment', 'Women', 'Animals'].map((category) => (
+            {['All', 'Education', 'Healthcare', 'Environment', 'Women Empowerment', 'Animal Welfare'].map((category) => (
               <Button
                 key={category}
                 variant="secondary"
