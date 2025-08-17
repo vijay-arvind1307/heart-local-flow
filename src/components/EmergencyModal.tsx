@@ -175,12 +175,20 @@ const EmergencyModal: React.FC<EmergencyModalProps> = ({ isOpen, onClose }) => {
                     <p className="text-gray-400 text-sm mb-4">
                       These are real community needs. Please respond only if you can genuinely help.
                     </p>
-                    <Button
-                      onClick={onClose}
-                      className="bg-accent-red hover:bg-accent-red-hover text-white px-8"
-                    >
-                      Close
-                    </Button>
+                    <div className="flex gap-3 justify-center">
+                      <Button
+                        variant="outline"
+                        className="border-accent-red text-accent-red hover:bg-accent-red hover:text-white"
+                      >
+                        Post Urgent Need
+                      </Button>
+                      <Button
+                        onClick={onClose}
+                        className="bg-accent-red hover:bg-accent-red-hover text-white px-8"
+                      >
+                        Close
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>

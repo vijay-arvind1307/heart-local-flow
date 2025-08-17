@@ -10,7 +10,7 @@ import { useAuth } from '../context/AuthContext';
 const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, loading, logout } = useAuth();
+  const { user, userData, loading, logout } = useAuth();
   const [isEmergencyModalOpen, setEmergencyModalOpen] = useState(false);
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -32,17 +32,16 @@ const Navigation = () => {
     }
   };
 
-  // Navigation items based on authentication status
+  // Navigation items based on authentication status and user role
   const getNavItems = () => {
     if (user) {
-      // User is logged in - show all navigation items
+      // TEMPORARY: Always show NGO dashboard for testing
+      // TODO: Restore role-based logic later
       return [
         { path: '/', label: 'Home', icon: Heart },
         { path: '/explore', label: 'Explore', icon: MapPin },
         { path: '/blog', label: 'Blog', icon: BookOpen },
-        { path: '/leaderboard', label: 'Leaderboard', icon: Award },
-        { path: '/wishlist', label: 'Wishlist', icon: Gift },
-        { path: '/profile', label: 'Profile', icon: User },
+        { path: '/ngo-dashboard', label: 'Dashboard', icon: User }
       ];
     }
 
