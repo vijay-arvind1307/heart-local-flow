@@ -1,88 +1,309 @@
 
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import { Interweave } from "interweave";
+import { ArrowLeft, Share2, Twitter, Facebook, Linkedin, Calendar, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
-// Dummy data for demonstration
-const DUMMY_ARTICLES = [
-  {
-    id: 1,
-    title: "From Struggle to Success: Priya's Journey",
-    author: "Priya Sharma",
-    date: "2025-08-10",
-    image: "/assets/hero-image.jpg",
-    content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, nisi eu consectetur consectetur, nisl nisi consectetur nisi, eu consectetur nisl nisi euismod nisi. Vivamus euismod, nisi eu consectetur consectetur, nisl nisi consectetur nisi, eu consectetur nisl nisi euismod nisi.`,
-  },
-  {
-    id: 101,
-    title: "Clean Water Project Launched",
-    author: "GreenEarth NGO",
-    date: "2025-08-01",
-    image: "/assets/hero-image.jpg",
-    content: `Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.`,
-  },
-];
-
-const getArticleById = (id) => DUMMY_ARTICLES.find((a) => a.id === Number(id));
+interface BlogPost {
+  id: string;
+  title: string;
+  author: string;
+  category: string;
+  tags: string[];
+  featuredImageUrl?: string;
+  content: string;
+  createdAt: any;
+  status: string;
+}
 
 const socialLinks = [
-  { name: "Twitter", icon: "M19.633 7.997c.013.176.013.353.013.53 0 5.39-4.104 11.61-11.61 11.61-2.307 0-4.453-.676-6.26-1.84.322.038.637.05.972.05 1.92 0 3.686-.638 5.096-1.713-1.793-.037-3.308-1.217-3.833-2.846.25.037.5.062.763.062.366 0 .73-.05 1.07-.142-1.87-.375-3.28-2.03-3.28-4.017v-.05c.55.305 1.18.488 1.85.513a4.07 4.07 0 0 1-1.81-3.39c0-.75.2-1.45.55-2.05a11.62 11.62 0 0 0 8.42 4.27c-.062-.3-.1-.613-.1-.925 0-2.26 1.83-4.09 4.09-4.09 1.18 0 2.25.5 3 1.3a8.13 8.13 0 0 0 2.59-.988 4.07 4.07 0 0 1-1.8 2.25 8.18 8.18 0 0 0 2.34-.637 8.77 8.77 0 0 1-2.04 2.12z", url: "https://twitter.com/share" },
-  { name: "Facebook", icon: "M18 2h-3a6 6 0 0 0-6 6v3H6a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h3v7a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-7h2.293a1 1 0 0 0 .707-1.707l-3-3A1 1 0 0 0 15 10h-2V8a2 2 0 0 1 2-2h3a1 1 0 0 0 0-2z", url: "https://facebook.com/sharer/sharer.php" },
-  { name: "LinkedIn", icon: "M16 8a6 6 0 1 0-12 0 6 6 0 0 0 12 0zm-1.5 0a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0zM6.75 12.25h1.5v4.5h-1.5v-4.5zm.75-2.25a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5zm2.25 2.25h1.5v4.5h-1.5v-4.5zm.75-2.25a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5z", url: "https://linkedin.com/shareArticle" },
+  { 
+    name: "Twitter", 
+    icon: Twitter, 
+    url: "https://twitter.com/intent/tweet",
+    color: "hover:text-blue-400"
+  },
+  { 
+    name: "Facebook", 
+    icon: Facebook, 
+    url: "https://facebook.com/sharer/sharer.php",
+    color: "hover:text-blue-600"
+  },
+  { 
+    name: "LinkedIn", 
+    icon: Linkedin, 
+    url: "https://linkedin.com/sharing/share-offsite",
+    color: "hover:text-blue-700"
+  },
 ];
 
 const ArticlePage: React.FC = () => {
   const { id } = useParams();
-  const article = getArticleById(id);
+  const navigate = useNavigate();
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!article) {
-    return <div className="text-center text-offWhite py-20">Article not found.</div>;
+  useEffect(() => {
+    const fetchPost = async () => {
+      if (!id) return;
+      
+      try {
+        setLoading(true);
+        const postDoc = await getDoc(doc(db, 'posts', id));
+        
+        if (postDoc.exists()) {
+          const data = postDoc.data();
+          setPost({
+            id: postDoc.id,
+            title: data.title,
+            author: data.author,
+            category: data.category,
+            tags: data.tags || [],
+            featuredImageUrl: data.featuredImageUrl,
+            content: data.content,
+            createdAt: data.createdAt,
+            status: data.status
+          });
+        } else {
+          setError('Post not found');
+        }
+      } catch (err) {
+        console.error('Error fetching post:', err);
+        setError('Error loading post');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [id]);
+
+  const handleShare = (platform: string) => {
+    const url = window.location.href;
+    const title = post?.title || '';
+    const text = post?.content?.replace(/<[^>]*>/g, '').substring(0, 100) + '...' || '';
+    
+    let shareUrl = '';
+    switch (platform) {
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+        break;
+      case 'facebook':
+        shareUrl = `https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+        break;
+    }
+    
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'width=600,height=400');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-red-500 mx-auto mb-4" />
+          <p className="text-gray-400">Loading article...</p>
+        </div>
+      </div>
+    );
   }
 
-  return (
-    <div className="min-h-screen bg-darkNavy text-offWhite flex justify-center">
-      {/* Sticky Social Bar */}
-      <aside className="hidden lg:flex flex-col items-center sticky top-24 h-fit mr-8 z-10">
-        <div className="space-y-4 bg-[#232b45] rounded-xl p-4 shadow-lg">
-          {socialLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group"
-              aria-label={`Share on ${link.name}`}
-            >
-              <svg width="28" height="28" fill="none" viewBox="0 0 24 24" className="text-mildRed group-hover:scale-110 transition-transform">
-                <path d={link.icon} fill="currentColor" />
-              </svg>
-            </a>
-          ))}
+  if (error || !post) {
+    return (
+      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-500 mb-4">Article Not Found</h1>
+          <p className="text-gray-400 mb-6">The article you're looking for doesn't exist or has been removed.</p>
+          <Button onClick={() => navigate('/blog')} className="bg-red-500 hover:bg-red-600">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Blog
+          </Button>
         </div>
-      </aside>
+      </div>
+    );
+  }
 
-      {/* Article Content */}
-      <main className="max-w-2xl w-full mx-auto px-4 py-12">
-        <h1 className="text-3xl md:text-5xl font-extrabold mb-4 leading-tight text-offWhite">
-          {article.title}
-        </h1>
-        <div className="flex items-center gap-4 mb-6 text-offWhite/80 text-sm">
-          <span>By {article.author}</span>
-          <span className="w-1 h-1 bg-mildRed rounded-full inline-block"></span>
-          <span>{new Date(article.date).toLocaleDateString()}</span>
+  const formatDate = (timestamp: any) => {
+    if (!timestamp) return 'Unknown date';
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-900 text-white">
+      {/* Header with Back Button */}
+      <div className="bg-slate-800 border-b border-slate-700 px-6 py-4">
+        <div className="max-w-4xl mx-auto">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/blog')}
+            className="text-white hover:bg-slate-700"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" />
+            Back to Blog
+          </Button>
         </div>
-        <motion.img
-          src={article.image}
-          alt={article.title}
-          className="w-full h-72 object-cover object-center rounded-xl mb-8 shadow-lg"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.7 }}
-        />
-        <article className="prose prose-invert max-w-none text-offWhite text-lg leading-relaxed">
-          {article.content}
-        </article>
-      </main>
+      </div>
+
+      <div className="flex justify-center">
+        {/* Sticky Social Bar */}
+        <motion.aside 
+          className="hidden lg:flex flex-col items-center sticky top-24 h-fit mr-8 z-10"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <div className="space-y-4 bg-slate-800 rounded-xl p-4 shadow-lg border border-slate-700">
+            <div className="text-center mb-2">
+              <Share2 className="w-5 h-5 text-red-500 mx-auto mb-1" />
+              <span className="text-xs text-gray-400">Share</span>
+            </div>
+            {socialLinks.map((link) => {
+              const IconComponent = link.icon;
+              return (
+                <button
+                  key={link.name}
+                  onClick={() => handleShare(link.name.toLowerCase())}
+                  className={`group p-2 rounded-lg transition-all duration-200 ${link.color}`}
+                  aria-label={`Share on ${link.name}`}
+                >
+                  <IconComponent className="w-5 h-5 text-gray-400 group-hover:scale-110 transition-transform" />
+                </button>
+              );
+            })}
+          </div>
+        </motion.aside>
+
+        {/* Article Content */}
+        <main className="max-w-4xl w-full mx-auto px-4 py-8 pb-20 lg:pb-8">
+          {/* Featured Image Header */}
+          {post.featuredImageUrl && (
+            <motion.div 
+              className="relative w-full h-96 mb-8 rounded-2xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+            >
+              <img
+                src={post.featuredImageUrl}
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-8">
+                <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight">
+                  {post.title}
+                </h1>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Article Header (if no featured image) */}
+          {!post.featuredImageUrl && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-8"
+            >
+              <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+                {post.title}
+              </h1>
+            </motion.div>
+          )}
+
+          {/* Meta Information */}
+          <motion.div 
+            className="flex flex-wrap items-center gap-4 mb-8 text-gray-400 text-sm"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <div className="flex items-center gap-2">
+              <User className="w-4 h-4" />
+              <span>By {post.author}</span>
+            </div>
+            <div className="w-1 h-1 bg-red-500 rounded-full"></div>
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              <span>{formatDate(post.createdAt)}</span>
+            </div>
+            <div className="w-1 h-1 bg-red-500 rounded-full"></div>
+            <span className="text-red-500 font-medium">{post.category}</span>
+          </motion.div>
+
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <motion.div 
+              className="flex flex-wrap gap-2 mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="bg-slate-700 text-xs text-red-500 px-3 py-1 rounded-full font-medium"
+                >
+                  {tag}
+                </span>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Article Content */}
+          <motion.article 
+            className="max-w-none text-white leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <Interweave 
+              content={post.content}
+              className="article-content"
+            />
+          </motion.article>
+        </main>
+      </div>
+
+      {/* Mobile Social Sharing Bar */}
+      <motion.div 
+        className="lg:hidden fixed bottom-0 left-0 right-0 bg-slate-800 border-t border-slate-700 p-4 z-50"
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
+      >
+        <div className="flex justify-center items-center space-x-6">
+          <span className="text-sm text-gray-400 mr-2">Share:</span>
+          {socialLinks.map((link) => {
+            const IconComponent = link.icon;
+            return (
+              <button
+                key={link.name}
+                onClick={() => handleShare(link.name.toLowerCase())}
+                className={`group p-2 rounded-lg transition-all duration-200 ${link.color}`}
+                aria-label={`Share on ${link.name}`}
+              >
+                <IconComponent className="w-5 h-5 text-gray-400 group-hover:scale-110 transition-transform" />
+              </button>
+            );
+          })}
+        </div>
+      </motion.div>
     </div>
   );
 };

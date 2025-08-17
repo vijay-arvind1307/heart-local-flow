@@ -25,6 +25,7 @@ import NotFound from "./pages/NotFound";
 
 import BlogPage from "./pages/BlogPage";
 import ArticlePage from "./pages/ArticlePage";
+import CreatePostPage from "./pages/admin/CreatePostPage";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
             <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/ngo-dashboard" element={<NgoDashboard />} />
             <Route path="/stat-card-demo" element={<StatCardDemo />} />
+            <Route path="/admin/create-post" element={<CreatePostPage />} />
           </Route>
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
